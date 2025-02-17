@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "19144069731",
+    "project_id": "megatechpf",
+    "storage_bucket": "megatechpf.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:19144069731:android:544524fcb4a297e3ff9e56",
+        "android_client_info": {
+          "package_name": "com.example.megatech"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBggxiZChsCykq9edTaHmOerBY4vCCyCLM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
