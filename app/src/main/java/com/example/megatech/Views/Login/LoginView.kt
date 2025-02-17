@@ -1,5 +1,7 @@
 package com.example.megatech.Views.Login
 
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -18,17 +20,29 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.megatech.Components.Alert
+import com.example.megatech.R
 import com.example.megatech.ViewModels.LoginViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LoginView(navController: NavController, loginVM: LoginViewModel){
-Text(text = "Login View")
+Text(
+    text = "LOGIN",
+    modifier = Modifier
+        .padding(start = 30.dp)
+        .padding(bottom = 16.dp)
+        .padding(top = 16.dp),
+    fontFamily = FontFamily.Cursive,
+    fontSize = 30.sp,
+    fontWeight = FontWeight.Bold
+)
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier.fillMaxSize()
