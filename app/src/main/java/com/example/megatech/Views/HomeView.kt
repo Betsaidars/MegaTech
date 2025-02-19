@@ -15,6 +15,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 import com.example.megatech.ViewModels.PrincipalViewModel
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.height
+import androidx.compose.ui.unit.dp
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -38,7 +41,8 @@ fun HomeView(navController: NavController, principalVM: PrincipalViewModel){
             modifier = Modifier.padding(pad),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text(text = "HOMEVIEW")
+            PrincipalView(navController)
+            Spacer(Modifier.height(16.dp))
         }
     }
 }
