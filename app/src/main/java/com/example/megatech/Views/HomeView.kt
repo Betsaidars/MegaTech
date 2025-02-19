@@ -43,6 +43,7 @@ fun HomeView(navController: NavController, principalVM: PrincipalViewModel){
         ) {
             PrincipalView(navController)
             Spacer(Modifier.height(16.dp))
+            CategoriaProductos(navController)
         }
     }
 }
