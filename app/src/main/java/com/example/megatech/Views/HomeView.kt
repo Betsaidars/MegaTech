@@ -18,6 +18,8 @@ import com.example.megatech.ViewModels.PrincipalViewModel
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.ui.unit.dp
+import com.example.megatech.Components.CategoriaProductos
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -43,7 +45,7 @@ fun HomeView(navController: NavController, principalVM: PrincipalViewModel){
         ) {
             PrincipalView(navController)
             Spacer(Modifier.height(16.dp))
-            CategoriaProductos(navController)
+            //ProductosMasVendidos()
         }
     }
 }
