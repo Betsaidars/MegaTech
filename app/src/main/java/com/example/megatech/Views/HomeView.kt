@@ -14,7 +14,6 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
-import com.example.megatech.ViewModels.PrincipalViewModel
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.ui.unit.dp
@@ -23,14 +22,13 @@ import com.example.megatech.Components.CategoriaProductos
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeView(navController: NavController, principalVM: PrincipalViewModel){
+fun HomeView(navController: NavController){
     Scaffold(
         topBar = {
             TopAppBar(
                 title = { Text(text = "MegaTech") },
                 navigationIcon = {
                     IconButton(onClick = {
-                        principalVM.signOut()
                         navController.popBackStack()
                     }) {
                         Icon(imageVector = Icons.Default.ExitToApp, contentDescription = "")

@@ -1,15 +1,12 @@
 package com.example.megatech.Model
 
+import com.google.gson.annotations.SerializedName
+
 data class UserModel(
-    val userId: String,
-    val email: String,
-    val username: String
-){
-    fun toMap(): MutableMap<String, Any>{
-        return mutableMapOf(
-            "userId" to this.userId,
-            "email" to this.email,
-            "username" to this.username
-        )
-    }
-}
+
+    @SerializedName("id") val id: String,
+    @SerializedName("username") val name: String,
+    @SerializedName("email") val email: String,
+    @SerializedName("password") val pass: String
+
+)

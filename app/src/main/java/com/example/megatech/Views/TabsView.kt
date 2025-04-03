@@ -1,4 +1,4 @@
-package com.example.megatech.Views.Login
+package com.example.megatech.Views
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.Tab
@@ -14,10 +14,13 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavController
+import com.example.megatech.SessionManager
 import com.example.megatech.ViewModels.LoginViewModel
+import com.example.megatech2.Views.LoginView
+import com.example.megatech2.Views.RegisterView
 
 @Composable
-fun TabsView(navController: NavController, loginVM: LoginViewModel){
+fun TabsView(navController: NavController, sessionManager: SessionManager){
     var selectedTab by remember { mutableStateOf(0) }
     val tabs = listOf("Iniciar Sesión", "Registrarse")
 
@@ -38,8 +41,8 @@ fun TabsView(navController: NavController, loginVM: LoginViewModel){
             }
         }
         when(selectedTab){
-            0 -> LoginView(navController, loginVM)
-            1 -> RegisterView(navController, loginVM)
+            0 -> LoginView(navController, sessionManager)
+            1 -> RegisterView()
         }
     }
 }

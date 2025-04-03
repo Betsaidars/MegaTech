@@ -28,7 +28,6 @@ import com.example.megatech.Components.Banner
 import com.example.megatech.Components.BotonesIcono
 import com.example.megatech.Components.CategoriaProductos
 import com.example.megatech.R
-import com.example.megatech.ViewModels.PrincipalViewModel
 
 @Composable
 fun PrincipalView(navController: NavController){

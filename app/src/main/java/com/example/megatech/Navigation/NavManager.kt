@@ -4,24 +4,29 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.megatech.ViewModels.LoginViewModel
-import com.example.megatech.ViewModels.PrincipalViewModel
-import com.example.megatech.Views.HomeView
-import com.example.megatech.Views.Login.BlankView
-import com.example.megatech.Views.Login.TabsView
+import com.example.megatech.SessionManager
+import com.example.megatech.ViewModels.MainViewModel
+import com.example.megatech.Views.TabsView
 
 @Composable
-fun NavManager(loginVM: LoginViewModel, principalVM: PrincipalViewModel){
+fun NavManager(sessionManager: SessionManager){
+
     val navController = rememberNavController()
-    NavHost(navController = navController, startDestination = "Blank" ){
-        composable("Blank"){
-            BlankView(navController)
+
+    NavHost(navController = navController, startDestination = "Login") {
+
+        composable("Login") {
+            TabsView(navController, sessionManager)
         }
-        composable("Login"){
-            TabsView(navController, loginVM)
+
+        composable("Register") {
+            TabsView(navController, sessionManager)
         }
-        composable("Home"){
-            HomeView(navController, principalVM)
+
+        composable("Main"){
+            MainView(navController, sessionManager)
         }
+
     }
+
 }
