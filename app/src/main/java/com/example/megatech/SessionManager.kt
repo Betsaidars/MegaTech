@@ -15,9 +15,9 @@ class SessionManager(context: Context) {
 
     fun saveUserModel(user: UserModel) {
         prefs.edit().putString(USER_ID_KEY, user.id).apply()
-        prefs.edit().putString(USER_NAME_KEY, user.name).apply()
+        prefs.edit().putString(USER_NAME_KEY, user.username).apply()
         prefs.edit().putString(USER_EMAIL_KEY, user.email).apply()
-        Log.d("SessionManager", "User model saved: ${user.id}, ${user.name}, ${user.email}")
+        Log.d("SessionManager", "User model saved: ${user.id}, ${user.username}, ${user.email}")
         Log.d("SessionManager", "Prefs content: ${prefs.all}")
     }
 
@@ -28,7 +28,7 @@ class SessionManager(context: Context) {
 
         if (userId != null && userName != null && userEmail != null) {
             val user = UserModel(userId, userName, userEmail, "") // No guardamos la contraseña
-            Log.d("SessionManager", "User model retrieved: ${user.id}, ${user.name}, ${user.email}")
+            Log.d("SessionManager", "User model retrieved: ${user.id}, ${user.username}, ${user.email}")
             Log.d("SessionManager", "Prefs content: ${prefs.all}")
             return user
         } else {

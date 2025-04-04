@@ -10,11 +10,19 @@ import retrofit2.http.POST
 
 interface ApiService {
 
+    // USERS
+
     @POST("register")
     suspend fun createUser(@Body user: UserModel): Response<UserModel>
 
     @POST("api/users/login")
     suspend fun login(@Body user: UserModel): Response<Map<String, String>>
+
+    @POST("api/users/register")
+    suspend fun registerUser(@Body userModel: UserModel): Response<Map<String, Any>>
+
+
+    // BANNERS
 
     @GET("/api/banners")
     suspend fun getAllBanner(): Response<List<BannerModel>>

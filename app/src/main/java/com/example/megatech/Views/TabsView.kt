@@ -42,7 +42,7 @@ fun TabsView(navController: NavController, sessionManager: SessionManager){
         }
         when(selectedTab){
             0 -> LoginView(navController, sessionManager)
-            1 -> RegisterView()
+            1 -> RegisterView(navController, sessionManager)
         }
     }
 }

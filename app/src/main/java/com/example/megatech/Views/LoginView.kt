@@ -33,7 +33,7 @@ import com.example.megatech.ViewModels.LoginViewModelFactory
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun LoginView(navController:  NavController, sessionManager: SessionManager, ) {
+fun LoginView(navController:  NavController, sessionManager: SessionManager) {
     val loginViewModel: LoginViewModel = viewModel(factory = LoginViewModelFactory(sessionManager))
 
     var username by remember { mutableStateOf("") }

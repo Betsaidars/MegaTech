@@ -2,6 +2,7 @@ package com.example.megatech.Views
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -28,6 +29,13 @@ import com.example.megatech.SessionManager
 import com.example.megatech.ViewModels.MainViewModel
 import com.example.megatech.ViewModels.MainViewModelFactory
 import androidx.compose.foundation.clickable
+import androidx.compose.material.IconButton
+import androidx.compose.material.Icon
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ShoppingCart // Ejemplo de icono
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.painterResource // Si usas iconos de recursos
+import com.example.megatech.R // Si tus iconos están en recursos
 
 
 
@@ -48,7 +56,8 @@ fun MainView(navController: NavController, sessionManager: SessionManager) {
             state = pagerState,
             modifier = Modifier
                 .fillMaxWidth()
-                .height(300.dp) // Ajusta la altura según sea necesario
+                .height(300.dp)
+                .padding(horizontal = 5.dp)
         ) { page ->
             Image(
                 painter = rememberImagePainter(banners[page].imageUrl),
@@ -70,7 +79,7 @@ fun MainView(navController: NavController, sessionManager: SessionManager) {
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             repeat(pagerState.pageCount) { index ->
-                val color = if (pagerState.currentPage == index) Color.LightGray else Color.DarkGray
+                val color = if (pagerState.currentPage == index) Color.DarkGray else Color.LightGray
                 Surface(
                     modifier = Modifier.size(10.dp),
                     shape = CircleShape,
@@ -78,5 +87,56 @@ fun MainView(navController: NavController, sessionManager: SessionManager) {
                 ) {}
             }
         }
+
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
+            horizontalArrangement = Arrangement.SpaceEvenly
+        ) {
+            IconButton(onClick = { /* Navegar a la ventana del icono 1 */ },
+                modifier = Modifier.clip(CircleShape).border(1.dp, Color.LightGray, CircleShape)) {
+                Icon(painterResource(id = R.drawable.televicion), contentDescription = "Icono 1")
+            }
+            IconButton(onClick = { /* Navegar a la ventana del icono 2 */ },
+                modifier = Modifier.clip(CircleShape).border(1.dp, Color.LightGray, CircleShape)) {
+                Icon(painterResource(id = R.drawable.consola), contentDescription = "Icono 2")
+            }
+            IconButton(onClick = { /* Navegar a la ventana del icono 3 */ },
+                modifier = Modifier.clip(CircleShape).border(1.dp, Color.LightGray, CircleShape)) {
+                Icon(painterResource(id = R.drawable.ordenador), contentDescription = "Icono 3")
+            }
+            IconButton(onClick = { /* Navegar a la ventana del icono 4 */ },
+                modifier = Modifier.clip(CircleShape).border(1.dp, Color.LightGray, CircleShape)) {
+                Icon(painterResource(id = R.drawable.home), contentDescription = "Icono 4")
+            }
+
+        }
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
+            horizontalArrangement = Arrangement.SpaceEvenly
+        ) {
+            IconButton(onClick = { /* Navegar a la ventana del icono 5 */ },
+                modifier = Modifier.clip(CircleShape).border(1.dp, Color.LightGray, CircleShape)) {
+                Icon(painterResource(id = R.drawable.camara), contentDescription = "Icono 5")
+            }
+            IconButton(onClick = { /* Navegar a la ventana del icono 6 */ },
+                modifier = Modifier.clip(CircleShape).border(1.dp, Color.LightGray, CircleShape)) {
+                Icon(painterResource(id = R.drawable.sonido), contentDescription = "Icono 6")
+            }
+            IconButton(onClick = { /* Navegar a la ventana del icono 7 */ },
+                modifier = Modifier.clip(CircleShape).border(1.dp, Color.LightGray, CircleShape)) {
+                Icon(painterResource(id = R.drawable.phone), contentDescription = "Icono 7")
+            }
+            IconButton(onClick = { /* Navegar a la ventana del icono 8 */ },
+                modifier = Modifier.clip(CircleShape).border(1.dp, Color.LightGray, CircleShape)) {
+                Icon(painterResource(id = R.drawable.reloj), contentDescription = "Icono 8")
+            }
+        }
+
+
+
     }
 }

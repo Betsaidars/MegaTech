@@ -46,6 +46,7 @@ dependencies {
     implementation("com.google.firebase:firebase-auth-ktx")
     implementation("com.google.firebase:firebase-firestore-ktx")
     implementation(libs.firebase.database.ktx)
+    implementation(libs.androidx.runtime.livedata)
 
     val nav_version = "2.5.3"
     implementation("androidx.navigation:navigation-compose:$nav_version")
@@ -63,6 +64,9 @@ dependencies {
     implementation("com.google.accompanist:accompanist-pager:0.33.2-alpha") // O la versión más reciente
     implementation("com.google.accompanist:accompanist-pager-indicators:0.33.2-alpha") // Para los indicadores
 
+    implementation("androidx.lifecycle:lifecycle-runtime-compose:2.8.7")
+
+    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.6.2")
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
