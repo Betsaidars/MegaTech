@@ -29,24 +29,31 @@ import com.example.megatech.SessionManager
 import com.example.megatech.ViewModels.MainViewModel
 import com.example.megatech.ViewModels.MainViewModelFactory
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.IconButton
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ShoppingCart // Ejemplo de icono
+import androidx.compose.material.icons.filled.Home
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.res.painterResource // Si usas iconos de recursos
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
-import com.example.megatech.R // Si tus iconos están en recursos
+import com.example.megatech.R
+import androidx.compose.material.*
+import androidx.compose.runtime.*
+
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -59,9 +66,57 @@ fun MainView(navController: NavController, sessionManager: SessionManager) {
     val isLoadingItems = mainViewModel.isLoadingItems.collectAsState().value
     val errorLoadingItems = mainViewModel.errorLoadingItems.collectAsState().value
 
+    var expanded by remember { mutableStateOf(false) }
+
     LaunchedEffect(Unit) {
         mainViewModel.getAllBanner()
         mainViewModel.getAllItems()
+    }
+
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceBetween // Mantenemos SpaceBetween para el logo
+    ) {
+        // Logo
+        Image(
+            painter = painterResource(id = R.drawable.logo),
+            contentDescription = "Logo de la empresa",
+            modifier = Modifier.size(40.dp),
+            contentScale = ContentScale.Fit
+        )
+
+        Box(contentAlignment = Alignment.TopEnd) { // Usamos un Box y alineamos su contenido al TopEnd
+            IconButton(onClick = { expanded = true }) {
+                Icon(
+                    painter = painterResource(id = R.drawable.baseline_menu_24),
+                    contentDescription = "Menu"
+                )
+            }
+            DropdownMenu(
+                expanded = expanded,
+                onDismissRequest = { expanded = false },
+                modifier = Modifier.align(Alignment.TopEnd)
+            ) {
+                DropdownMenuItem(onClick = {
+                    expanded = false
+                    navController.navigate("profile")
+                }) {
+                    Text("Perfil")
+                }
+                DropdownMenuItem(onClick = {
+                    expanded = false
+                    sessionManager.logout()
+                    navController.navigate("login") {
+                        popUpTo("Main") { inclusive = true }
+                    }
+                }) {
+                    Text("Cerrar sesión")
+                }
+            }
+        }
     }
 
     Column(modifier = Modifier.fillMaxSize()) {
@@ -70,6 +125,7 @@ fun MainView(navController: NavController, sessionManager: SessionManager) {
             modifier = Modifier
                 .fillMaxWidth()
                 .height(250.dp)
+                .padding(top = 100.dp)
         ) { page ->
             Image(
                 painter = rememberImagePainter(banners[page].imageUrl),
@@ -77,7 +133,7 @@ fun MainView(navController: NavController, sessionManager: SessionManager) {
                 modifier = Modifier
                     .fillMaxSize()
                     .clickable {
-                        //Aqui pondría la naveganción a la otra página
+                        navController.navigate("Discount")
 
                         println("Banner ${page + 1 } clicked")
                     }

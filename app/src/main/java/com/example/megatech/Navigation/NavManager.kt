@@ -5,6 +5,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.megatech.SessionManager
+import com.example.megatech.Views.DiscountView
 import com.example.megatech.Views.TabsView
 import com.example.megatech.Views.MainView
 
@@ -27,6 +28,14 @@ fun NavManager(sessionManager: SessionManager){
             MainView(navController, sessionManager)
         }
 
-    }
+        composable("Discount") { backStackEntry ->
+            val discountPercentage = backStackEntry.arguments?.getString("discountPercentage")?.toIntOrNull() ?: 30 // Default 30%
+            DiscountView(navController, sessionManager, discountPercentage)
+        }
 
+
+
+
+
+    }
 }
