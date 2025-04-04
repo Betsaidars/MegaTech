@@ -67,7 +67,7 @@ fun LoginView(navController:  NavController, sessionManager: SessionManager, ) {
             loginViewModel.loginUser(user, { loggedInUser ->
                 // Inicio de sesión exitoso y datos del usuario obtenidos
                 Toast.makeText(context, "Inicio de sesión exitoso", Toast.LENGTH_SHORT).show()
-                navController.navigate("mainView") // Navega a la pantalla principal
+                navController.navigate("Main") // Navega a la pantalla principal
             }, { errorMessage ->
                 // Error de inicio de sesión
                 Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show()

@@ -58,6 +58,11 @@ dependencies {
 
     implementation("com.squareup.okhttp3:logging-interceptor:4.9.3")
 
+    implementation("io.coil-kt:coil-compose:2.4.0")
+
+    implementation("com.google.accompanist:accompanist-pager:0.33.2-alpha") // O la versión más reciente
+    implementation("com.google.accompanist:accompanist-pager-indicators:0.33.2-alpha") // Para los indicadores
+
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)

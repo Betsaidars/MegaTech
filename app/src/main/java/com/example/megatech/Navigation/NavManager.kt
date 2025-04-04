@@ -5,8 +5,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.megatech.SessionManager
-import com.example.megatech.ViewModels.MainViewModel
 import com.example.megatech.Views.TabsView
+import com.example.megatech.Views.MainView
 
 @Composable
 fun NavManager(sessionManager: SessionManager){
