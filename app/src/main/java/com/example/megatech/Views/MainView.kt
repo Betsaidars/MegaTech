@@ -29,15 +29,24 @@ import com.example.megatech.SessionManager
 import com.example.megatech.ViewModels.MainViewModel
 import com.example.megatech.ViewModels.MainViewModelFactory
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.IconButton
 import androidx.compose.material.Icon
+import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ShoppingCart // Ejemplo de icono
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource // Si usas iconos de recursos
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.sp
 import com.example.megatech.R // Si tus iconos están en recursos
-
-
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -45,10 +54,14 @@ fun MainView(navController: NavController, sessionManager: SessionManager) {
     val mainViewModel: MainViewModel = viewModel(factory = MainViewModelFactory(sessionManager))
 
     val banners = mainViewModel.banners.collectAsState().value
+    val items = mainViewModel.items.collectAsState().value
     val pagerState = rememberPagerState(pageCount = { banners.size })
+    val isLoadingItems = mainViewModel.isLoadingItems.collectAsState().value
+    val errorLoadingItems = mainViewModel.errorLoadingItems.collectAsState().value
 
     LaunchedEffect(Unit) {
         mainViewModel.getAllBanner()
+        mainViewModel.getAllItems()
     }
 
     Column(modifier = Modifier.fillMaxSize()) {
@@ -56,8 +69,7 @@ fun MainView(navController: NavController, sessionManager: SessionManager) {
             state = pagerState,
             modifier = Modifier
                 .fillMaxWidth()
-                .height(300.dp)
-                .padding(horizontal = 5.dp)
+                .height(250.dp)
         ) { page ->
             Image(
                 painter = rememberImagePainter(banners[page].imageUrl),
@@ -136,6 +148,62 @@ fun MainView(navController: NavController, sessionManager: SessionManager) {
             }
         }
 
+        Spacer(modifier = Modifier.height(40.dp))
+
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(horizontal = 16.dp)
+        ) {
+            Text(
+                text = "Más vendidos",
+                style = MaterialTheme.typography.headlineSmall.copy(
+                    fontWeight = FontWeight.Bold
+                ),
+                modifier = Modifier
+                    .padding(bottom = 16.dp)
+                    .align(Alignment.CenterHorizontally)
+            )
+
+            LazyVerticalGrid(
+                columns = GridCells.Fixed(2),
+                modifier = Modifier.fillMaxSize(),
+                horizontalArrangement = Arrangement.spacedBy(16.dp),
+                verticalArrangement = Arrangement.spacedBy(16.dp),
+                contentPadding = PaddingValues(bottom = 100.dp)
+            ) {
+                items(items) { item ->
+                    Column(
+                        modifier = Modifier
+                            .clickable {
+                                navController.navigate("itemDetail/${item.id}")
+                            }
+                            .padding(8.dp)
+                    ) {
+                        Image(
+                            painter = rememberImagePainter(item.imageUrl.firstOrNull() ?: ""),
+                            contentDescription = item.name,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(150.dp)
+                        )
+                        Text(
+                            text = item.name,
+                            style = MaterialTheme.typography.bodyMedium,
+                            fontSize = 16.sp,
+                            fontWeight = FontWeight.Bold,
+                            modifier = Modifier.padding(top = 4.dp)
+                        )
+                        Text(
+                            text = "$${item.price}",
+                            style = MaterialTheme.typography.bodySmall,
+                            fontSize = 14.sp,
+                            color = Color.Gray
+                        )
+                    }
+                }
+            }
+        }
 
 
     }

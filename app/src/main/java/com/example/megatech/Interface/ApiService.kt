@@ -1,6 +1,7 @@
 package com.example.megatech.Interface
 
 import com.example.megatech.Model.BannerModel
+import com.example.megatech.Model.ItemsModel
 import com.example.megatech.Model.UserModel
 import retrofit2.Response
 import retrofit2.http.Body
@@ -28,7 +29,8 @@ interface ApiService {
     suspend fun getAllBanner(): Response<List<BannerModel>>
 
 
-
+    @GET("/api/items")
+    suspend fun getAllItems(): Response<List<ItemsModel>>
 
 
 }
