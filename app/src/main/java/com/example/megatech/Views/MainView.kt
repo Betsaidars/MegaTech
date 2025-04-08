@@ -32,6 +32,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
@@ -76,7 +77,7 @@ fun MainView(navController: NavController, sessionManager: SessionManager) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(16.dp),
+            .padding(12.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween // Mantenemos SpaceBetween para el logo
     ) {
@@ -88,17 +89,22 @@ fun MainView(navController: NavController, sessionManager: SessionManager) {
             contentScale = ContentScale.Fit
         )
 
-        Box(contentAlignment = Alignment.TopEnd) { // Usamos un Box y alineamos su contenido al TopEnd
+        Box(
+            contentAlignment = Alignment.TopEnd
+        ) { // Usamos un Box y alineamos su contenido al TopEnd
             IconButton(onClick = { expanded = true }) {
                 Icon(
                     painter = painterResource(id = R.drawable.baseline_menu_24),
-                    contentDescription = "Menu"
+                    contentDescription = "Menu",
                 )
             }
             DropdownMenu(
                 expanded = expanded,
                 onDismissRequest = { expanded = false },
-                modifier = Modifier.align(Alignment.TopEnd)
+                modifier = Modifier
+                    .align(Alignment.TopEnd)
+                    .fillMaxHeight()
+                    .padding(top = 5.dp)
             ) {
                 DropdownMenuItem(onClick = {
                     expanded = false
