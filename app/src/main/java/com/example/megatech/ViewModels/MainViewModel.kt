@@ -97,10 +97,6 @@ class MainViewModel(private val sessionManager: SessionManager) : ViewModel() {
                     val itemList = response.body() ?: emptyList()
                     _items.value = itemList
                     Log.d("MainViewModel", "Items cargados: ${itemList.size}")
-                    // Añade este loop para loguear los colores disponibles de cada item
-                    itemList.forEach { item ->
-                        Log.d("API_ITEM_COLORS", "Item ID: ${item.id}, Available Colors: ${item.availableColors}")
-                    }
                 } else {
                     Log.e("MainViewModel", "Error en la API: ${response.code()}")
                 }
@@ -117,7 +113,6 @@ class MainViewModel(private val sessionManager: SessionManager) : ViewModel() {
             foundItem
         }
     }
-
 
 
 }
