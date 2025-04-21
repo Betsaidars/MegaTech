@@ -26,7 +26,7 @@ fun ConsolaView(navController: NavController, sessionManager: SessionManager) {
     val mainViewModel: MainViewModel = viewModel(factory = MainViewModelFactory(sessionManager))
     val consolas by mainViewModel.consolas.collectAsState()
 
-    Log.d("TELES_VIEW", "Number of televisores: ${consolas.size}")
+    Log.d("TELES_VIEW", "Number of consolas: ${consolas.size}")
 
     Column(
         modifier = Modifier

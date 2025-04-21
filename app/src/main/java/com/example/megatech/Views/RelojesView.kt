@@ -26,7 +26,7 @@ fun RelojesView(navController: NavController, sessionManager: SessionManager) {
     val mainViewModel: MainViewModel = viewModel(factory = MainViewModelFactory(sessionManager))
     val relojes by mainViewModel.relojes.collectAsState()
 
-    Log.d("TELES_VIEW", "Number of televisores: ${relojes.size}")
+    Log.d("TELES_VIEW", "Number of relojes: ${relojes.size}")
 
     Column(
         modifier = Modifier

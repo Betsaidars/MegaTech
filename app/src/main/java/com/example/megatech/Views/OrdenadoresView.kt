@@ -26,7 +26,7 @@ fun OrdenadoresView(navController: NavController, sessionManager: SessionManager
     val mainViewModel: MainViewModel = viewModel(factory = MainViewModelFactory(sessionManager))
     val ordenadores by mainViewModel.ordenadores.collectAsState()
 
-    Log.d("TELES_VIEW", "Number of televisores: ${ordenadores.size}")
+    Log.d("TELES_VIEW", "Number of ordenadores: ${ordenadores.size}")
 
     Column(
         modifier = Modifier

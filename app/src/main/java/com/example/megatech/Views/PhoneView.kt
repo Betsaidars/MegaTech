@@ -26,7 +26,7 @@ fun PhoneView(navController: NavController, sessionManager: SessionManager) {
     val mainViewModel: MainViewModel = viewModel(factory = MainViewModelFactory(sessionManager))
     val phones by mainViewModel.phone.collectAsState()
 
-    Log.d("TELES_VIEW", "Number of televisores: ${phones.size}")
+    Log.d("TELES_VIEW", "Number of phones: ${phones.size}")
 
     Column(
         modifier = Modifier

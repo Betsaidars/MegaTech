@@ -26,7 +26,7 @@ fun SonidoView(navController: NavController, sessionManager: SessionManager) {
     val mainViewModel: MainViewModel = viewModel(factory = MainViewModelFactory(sessionManager))
     val sonidos by mainViewModel.sonido.collectAsState()
 
-    Log.d("TELES_VIEW", "Number of televisores: ${sonidos.size}")
+    Log.d("TELES_VIEW", "Number of sonido: ${sonidos.size}")
 
     Column(
         modifier = Modifier

@@ -26,6 +26,8 @@ fun CamaraView(navController: NavController, sessionManager: SessionManager) {
     val mainViewModel: MainViewModel = viewModel(factory = MainViewModelFactory(sessionManager))
     val camaras by mainViewModel.camaras.collectAsState()
 
+    Log.d("TELES_VIEW", "Number of camaras: ${camaras.size}")
+
     Column(
         modifier = Modifier
             .fillMaxSize()

@@ -26,7 +26,7 @@ fun HogarInteligenteView(navController: NavController, sessionManager: SessionMa
     val mainViewModel: MainViewModel = viewModel(factory = MainViewModelFactory(sessionManager))
     val hogarInteligente by mainViewModel.hogarInteligente.collectAsState()
 
-    Log.d("TELES_VIEW", "Number of televisores: ${hogarInteligente.size}")
+    Log.d("TELES_VIEW", "Number of hogar inteligente: ${hogarInteligente.size}")
 
     Column(
         modifier = Modifier

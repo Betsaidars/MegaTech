@@ -85,6 +85,14 @@ fun NavManager(sessionManager: SessionManager){
             DetalleProductoScreen(itemId = itemId, sessionManager) // Crea este Composable
         }
 
+        composable("itemDetail/{itemId}",
+            arguments = listOf(navArgument("itemId") { type = NavType.StringType })
+        ) { backStackEntry ->
+            val itemId = backStackEntry.arguments?.getString("itemId")
+            DetalleProductoScreen(itemId = itemId, sessionManager = sessionManager)
+        }
+
+
 
     }
 }
