@@ -3,135 +3,168 @@ package com.example.megatech.Views
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Surface
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.FavoriteBorder
+import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.ShoppingCart
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavController
-import coil.compose.rememberImagePainter
-import com.example.megatech.SessionManager
-import com.example.megatech.ViewModels.MainViewModel
-import com.example.megatech.ViewModels.MainViewModelFactory
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.material.IconButton
-import androidx.compose.material.Icon
-import androidx.compose.material.Text
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
+import coil.compose.rememberImagePainter
 import com.example.megatech.R
-import androidx.compose.material.*
-import androidx.compose.runtime.*
+import com.example.megatech.SessionManager
+import com.example.megatech.ViewModels.MainViewModel
+import com.example.megatech.ViewModels.MainViewModelFactory
+import androidx.compose.ui.graphics.Color
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 
 
-@OptIn(ExperimentalFoundationApi::class)
+@OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun MainView(navController: NavController, sessionManager: SessionManager) {
     val mainViewModel: MainViewModel = viewModel(factory = MainViewModelFactory(sessionManager))
 
-    val banners = mainViewModel.banners.collectAsState().value
-    val items = mainViewModel.items.collectAsState().value
+    val banners by mainViewModel.banners.collectAsState()
+    val items by mainViewModel.items.collectAsState()
     val pagerState = rememberPagerState(pageCount = { banners.size })
-    val isLoadingItems = mainViewModel.isLoadingItems.collectAsState().value
-    val errorLoadingItems = mainViewModel.errorLoadingItems.collectAsState().value
+    val isLoadingItems by mainViewModel.isLoadingItems.collectAsState()
+    val errorLoadingItems by mainViewModel.errorLoadingItems.collectAsState()
 
-    var expanded by remember { mutableStateOf(false) }
+    var expandedMenu by remember { mutableStateOf(false) }
+    var searchText by remember { mutableStateOf("") }
 
     LaunchedEffect(Unit) {
         mainViewModel.getAllBanner()
         mainViewModel.getAllItems()
     }
 
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(12.dp),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.SpaceBetween // Mantenemos SpaceBetween para el logo
-    ) {
-        // Logo
-        Image(
-            painter = painterResource(id = R.drawable.logo),
-            contentDescription = "Logo de la empresa",
-            modifier = Modifier.size(40.dp),
-            contentScale = ContentScale.Fit
-        )
+    Column(modifier = Modifier.fillMaxSize()) {
+        // Barra superior modificada
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 8.dp, horizontal = 12.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            // Menú Hamburguesa
+            Box(contentAlignment = Alignment.CenterStart) {
+                IconButton(onClick = { expandedMenu = true }) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.baseline_menu_24),
+                        contentDescription = "Menu",
+                    )
+                }
+                DropdownMenu(
+                    expanded = expandedMenu,
+                    onDismissRequest = { expandedMenu = false }
+                ) {
+                    DropdownMenuItem(
+                        text = { Text("Perfil") },
+                        onClick = {
+                            expandedMenu = false
+                            navController.navigate("profile")
+                        }
+                    )
 
-        Box(
-            contentAlignment = Alignment.TopEnd
-        ) { // Usamos un Box y alineamos su contenido al TopEnd
-            IconButton(onClick = { expanded = true }) {
-                Icon(
-                    painter = painterResource(id = R.drawable.baseline_menu_24),
-                    contentDescription = "Menu",
+                    DropdownMenuItem(
+                        text = { Text("Cerrar sesión") },
+                        onClick = {
+                            expandedMenu = false
+                            sessionManager.logout()
+                            navController.navigate("login") {
+                                popUpTo("Main") { inclusive = true }
+                            }
+                        }
+                    )
+
+                }
+            }
+
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                modifier = Modifier.weight(1f) // El buscador ocupa el espacio restante
+            ) {
+                // Logo Clicable
+                IconButton(onClick = { /* TODO: Implementar acción al hacer clic en el logo */ }) {
+                    Image(
+                        painter = painterResource(id = R.drawable.logo),
+                        contentDescription = "Logo de la empresa",
+                        modifier = Modifier.size(30.dp),
+                        contentScale = ContentScale.Fit
+                    )
+                }
+                // Buscador
+                TextField(
+                    value = searchText,
+                    onValueChange = { searchText = it },
+                    leadingIcon = { Icon(Icons.Filled.Search, contentDescription = "Buscar") },
+                    placeholder = { Text("Buscar productos") },
+                    modifier = Modifier
+                        .weight(1f)
+                        .height(30.dp)
                 )
             }
-            DropdownMenu(
-                expanded = expanded,
-                onDismissRequest = { expanded = false },
-                modifier = Modifier
-                    .align(Alignment.TopEnd)
-                    .fillMaxHeight()
-                    .padding(top = 5.dp)
-            ) {
-                DropdownMenuItem(onClick = {
-                    expanded = false
-                    navController.navigate("profile")
-                }) {
-                    Text("Perfil")
+
+            // Iconos finales
+            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                IconButton(onClick = { /* TODO: Navegar al carrito */ }) {
+                    Icon(Icons.Filled.ShoppingCart, contentDescription = "Carrito")
                 }
-                DropdownMenuItem(onClick = {
-                    expanded = false
-                    sessionManager.logout()
-                    navController.navigate("login") {
-                        popUpTo("Main") { inclusive = true }
-                    }
-                }) {
-                    Text("Cerrar sesión")
+                IconButton(onClick = { /* TODO: Navegar a la lista de deseos */ }) {
+                    Icon(Icons.Filled.FavoriteBorder, contentDescription = "Lista de deseos")
                 }
             }
         }
-    }
 
-    Column(modifier = Modifier.fillMaxSize()) {
         HorizontalPager(
             state = pagerState,
             modifier = Modifier
                 .fillMaxWidth()
                 .height(250.dp)
-                .padding(top = 100.dp)
+                .padding(top = 16.dp) // Reducido el padding superior
         ) { page ->
             Image(
                 painter = rememberImagePainter(banners[page].imageUrl),
@@ -140,7 +173,6 @@ fun MainView(navController: NavController, sessionManager: SessionManager) {
                     .fillMaxSize()
                     .clickable {
                         navController.navigate("Discount")
-
                         println("Banner ${page + 1 } clicked")
                     }
             )
@@ -165,52 +197,51 @@ fun MainView(navController: NavController, sessionManager: SessionManager) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp),
+                .padding(vertical = 8.dp, horizontal = 16.dp),
             horizontalArrangement = Arrangement.SpaceEvenly
         ) {
             IconButton(onClick = { navController.navigate("televicion") },
                 modifier = Modifier.clip(CircleShape).border(1.dp, Color.LightGray, CircleShape)) {
-                Icon(painterResource(id = R.drawable.televicion), contentDescription = "Icono 1")
+                Icon(painterResource(id = R.drawable.televicion), contentDescription = "Televisión")
             }
             IconButton(onClick = { navController.navigate("consola") },
                 modifier = Modifier.clip(CircleShape).border(1.dp, Color.LightGray, CircleShape)) {
-                Icon(painterResource(id = R.drawable.consola), contentDescription = "Icono 2")
+                Icon(painterResource(id = R.drawable.consola), contentDescription = "Consolas")
             }
             IconButton(onClick = { navController.navigate("ordenador") },
                 modifier = Modifier.clip(CircleShape).border(1.dp, Color.LightGray, CircleShape)) {
-                Icon(painterResource(id = R.drawable.ordenador), contentDescription = "Icono 3")
+                Icon(painterResource(id = R.drawable.ordenador), contentDescription = "Ordenadores")
             }
             IconButton(onClick = { navController.navigate("home") },
                 modifier = Modifier.clip(CircleShape).border(1.dp, Color.LightGray, CircleShape)) {
-                Icon(painterResource(id = R.drawable.home), contentDescription = "Icono 4")
+                Icon(painterResource(id = R.drawable.home), contentDescription = "Hogar")
             }
-
         }
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp),
+                .padding(vertical = 8.dp, horizontal = 16.dp),
             horizontalArrangement = Arrangement.SpaceEvenly
         ) {
             IconButton(onClick = { navController.navigate("camara") },
                 modifier = Modifier.clip(CircleShape).border(1.dp, Color.LightGray, CircleShape)) {
-                Icon(painterResource(id = R.drawable.camara), contentDescription = "Icono 5")
+                Icon(painterResource(id = R.drawable.camara), contentDescription = "Cámaras")
             }
             IconButton(onClick = { navController.navigate("sonido") },
                 modifier = Modifier.clip(CircleShape).border(1.dp, Color.LightGray, CircleShape)) {
-                Icon(painterResource(id = R.drawable.sonido), contentDescription = "Icono 6")
+                Icon(painterResource(id = R.drawable.sonido), contentDescription = "Sonido")
             }
             IconButton(onClick = { navController.navigate("phone") },
                 modifier = Modifier.clip(CircleShape).border(1.dp, Color.LightGray, CircleShape)) {
-                Icon(painterResource(id = R.drawable.phone), contentDescription = "Icono 7")
+                Icon(painterResource(id = R.drawable.phone), contentDescription = "Teléfonos")
             }
             IconButton(onClick = { navController.navigate("reloj") },
                 modifier = Modifier.clip(CircleShape).border(1.dp, Color.LightGray, CircleShape)) {
-                Icon(painterResource(id = R.drawable.reloj), contentDescription = "Icono 8")
+                Icon(painterResource(id = R.drawable.reloj), contentDescription = "Relojes")
             }
         }
 
-        Spacer(modifier = Modifier.height(40.dp))
+        Spacer(modifier = Modifier.height(16.dp)) // Reducido el espacio
 
         Column(
             modifier = Modifier
@@ -266,7 +297,5 @@ fun MainView(navController: NavController, sessionManager: SessionManager) {
                 }
             }
         }
-
-
     }
 }

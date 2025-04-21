@@ -20,7 +20,7 @@ fun RatingStars(rating: Double) {
         // Mostrar estrellas llenas
         for (i in 0 until fullStars) {
             Icon(
-                imageVector = Icons.Filled.Star,
+                painterResource(id = R.drawable.star),
                 contentDescription = "Estrella llena",
                 tint = Color.Yellow,
                 modifier = androidx.compose.ui.Modifier.size(20.dp)
