@@ -47,10 +47,9 @@ fun TelevisoresView(navController: NavController, sessionManager: SessionManager
                 contentPadding = PaddingValues(vertical = 8.dp)
             ) {
                 items(televisores) { televisor ->
-                    ProductoItem(producto = televisor)
+                    ProductoItem(producto = televisor, navController = navController)
                 }
             }
         }
     }
-
 }

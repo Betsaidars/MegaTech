@@ -10,7 +10,7 @@ data class ItemsModel(
     @SerializedName("description") val description: String,
     @SerializedName("brand") val brand: String,
     @SerializedName("model") val model: String,
-    @SerializedName("avalaibleColors") val avalaibleColors: List<String>,
+    @SerializedName("availableColors") val availableColors: List<String?>?,
     @SerializedName("imageUrl") val imageUrl: List<String>,
     @SerializedName("price") val price: Double,
     @SerializedName("rating") val rating: Double

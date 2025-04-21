@@ -34,7 +34,7 @@ fun OrdenadoresView(navController: NavController, sessionManager: SessionManager
             .padding(16.dp)
     ) {
         Text(
-            "Televisores",
+            "Ordenadores",
             style = MaterialTheme.typography.headlineMedium,
             modifier = Modifier.padding(bottom = 16.dp)
         )
@@ -45,7 +45,7 @@ fun OrdenadoresView(navController: NavController, sessionManager: SessionManager
                 contentPadding = PaddingValues(vertical = 8.dp)
             ) {
                 items(ordenadores) { ordenador ->
-                    ProductoItem(producto = ordenador)
+                    ProductoItem(producto = ordenador, navController = navController)
                 }
             }
         }

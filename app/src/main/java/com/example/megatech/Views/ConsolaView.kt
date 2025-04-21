@@ -34,7 +34,7 @@ fun ConsolaView(navController: NavController, sessionManager: SessionManager) {
             .padding(16.dp)
     ) {
         Text(
-            "Televisores",
+            "Consolas",
             style = MaterialTheme.typography.headlineMedium,
             modifier = Modifier.padding(bottom = 16.dp)
         )
@@ -45,7 +45,7 @@ fun ConsolaView(navController: NavController, sessionManager: SessionManager) {
                 contentPadding = PaddingValues(vertical = 8.dp)
             ) {
                 items(consolas) { consola ->
-                    ProductoItem(producto = consola)
+                    ProductoItem(producto = consola, navController = navController)
                 }
             }
         }

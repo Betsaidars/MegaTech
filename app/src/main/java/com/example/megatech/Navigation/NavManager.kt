@@ -1,9 +1,12 @@
 package com.example.megatech.Navigation
 
 import androidx.compose.runtime.Composable
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
+import com.example.megatech.Components.DetalleProductoScreen
 import com.example.megatech.SessionManager
 import com.example.megatech.Views.CamaraView
 import com.example.megatech.Views.ConsolaView
@@ -72,6 +75,14 @@ fun NavManager(sessionManager: SessionManager){
 
         composable("reloj"){
             RelojesView(navController, sessionManager)
+        }
+
+        composable(
+            "detalleProducto/{itemId}",
+            arguments = listOf(navArgument("itemId") { type = NavType.StringType })
+        ) { backStackEntry ->
+            val itemId = backStackEntry.arguments?.getString("itemId")
+            DetalleProductoScreen(itemId = itemId, sessionManager) // Crea este Composable
         }
 
 

@@ -34,7 +34,7 @@ fun RelojesView(navController: NavController, sessionManager: SessionManager) {
             .padding(16.dp)
     ) {
         Text(
-            "Televisores",
+            "Smartwatches",
             style = MaterialTheme.typography.headlineMedium,
             modifier = Modifier.padding(bottom = 16.dp)
         )
@@ -45,7 +45,7 @@ fun RelojesView(navController: NavController, sessionManager: SessionManager) {
                 contentPadding = PaddingValues(vertical = 8.dp)
             ) {
                 items(relojes) { reloj ->
-                    ProductoItem(producto = reloj)
+                    ProductoItem(producto = reloj, navController = navController)
                 }
             }
         }

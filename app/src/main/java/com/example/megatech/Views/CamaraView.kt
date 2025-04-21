@@ -26,15 +26,13 @@ fun CamaraView(navController: NavController, sessionManager: SessionManager) {
     val mainViewModel: MainViewModel = viewModel(factory = MainViewModelFactory(sessionManager))
     val camaras by mainViewModel.camaras.collectAsState()
 
-    Log.d("TELES_VIEW", "Number of televisores: ${camaras.size}")
-
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(16.dp)
     ) {
         Text(
-            "Televisores",
+            "Camaras",
             style = MaterialTheme.typography.headlineMedium,
             modifier = Modifier.padding(bottom = 16.dp)
         )
@@ -45,7 +43,7 @@ fun CamaraView(navController: NavController, sessionManager: SessionManager) {
                 contentPadding = PaddingValues(vertical = 8.dp)
             ) {
                 items(camaras) { camara ->
-                    ProductoItem(producto = camara)
+                    ProductoItem(producto = camara, navController = navController)
                 }
             }
         }

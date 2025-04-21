@@ -97,12 +97,24 @@ class MainViewModel(private val sessionManager: SessionManager) : ViewModel() {
                     val itemList = response.body() ?: emptyList()
                     _items.value = itemList
                     Log.d("MainViewModel", "Items cargados: ${itemList.size}")
+                    // Añade este loop para loguear los colores disponibles de cada item
+                    itemList.forEach { item ->
+                        Log.d("API_ITEM_COLORS", "Item ID: ${item.id}, Available Colors: ${item.availableColors}")
+                    }
                 } else {
                     Log.e("MainViewModel", "Error en la API: ${response.code()}")
                 }
             } catch (e: Exception) {
                 Log.e("MainViewModel", "Error al obtener los items: ${e.message}")
             }
+        }
+    }
+
+    fun getItemById(itemId: String?): Flow<ItemsModel?> {
+        return _items.map { itemsList ->
+            val foundItem = itemsList.find { it.id == itemId }
+            Log.d("GET_ITEM_BY_ID", "Item ID: $itemId, Found Item: ${foundItem?.name}, Colors: ${foundItem?.availableColors}")
+            foundItem
         }
     }
 

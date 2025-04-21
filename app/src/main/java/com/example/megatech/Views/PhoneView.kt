@@ -34,7 +34,7 @@ fun PhoneView(navController: NavController, sessionManager: SessionManager) {
             .padding(16.dp)
     ) {
         Text(
-            "Televisores",
+            "Smartphones",
             style = MaterialTheme.typography.headlineMedium,
             modifier = Modifier.padding(bottom = 16.dp)
         )
@@ -45,7 +45,7 @@ fun PhoneView(navController: NavController, sessionManager: SessionManager) {
                 contentPadding = PaddingValues(vertical = 8.dp)
             ) {
                 items(phones) { phone ->
-                    ProductoItem(producto = phone)
+                    ProductoItem(producto = phone, navController = navController)
                 }
             }
         }

@@ -32,5 +32,9 @@ interface ApiService {
     @GET("/api/items")
     suspend fun getAllItems(): Response<List<ItemsModel>>
 
+    // ITEMS
+
+    @GET
+    suspend fun getItemById(): Response<List<ItemsModel>>
 
 }

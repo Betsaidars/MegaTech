@@ -34,7 +34,7 @@ fun SonidoView(navController: NavController, sessionManager: SessionManager) {
             .padding(16.dp)
     ) {
         Text(
-            "Televisores",
+            "Sonido",
             style = MaterialTheme.typography.headlineMedium,
             modifier = Modifier.padding(bottom = 16.dp)
         )
@@ -45,7 +45,7 @@ fun SonidoView(navController: NavController, sessionManager: SessionManager) {
                 contentPadding = PaddingValues(vertical = 8.dp)
             ) {
                 items(sonidos) { sonido ->
-                    ProductoItem(producto = sonido)
+                    ProductoItem(producto = sonido, navController = navController)
                 }
             }
         }

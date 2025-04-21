@@ -34,7 +34,7 @@ fun HogarInteligenteView(navController: NavController, sessionManager: SessionMa
             .padding(16.dp)
     ) {
         Text(
-            "Televisores",
+            "Hogar Inteligente",
             style = MaterialTheme.typography.headlineMedium,
             modifier = Modifier.padding(bottom = 16.dp)
         )
@@ -45,7 +45,7 @@ fun HogarInteligenteView(navController: NavController, sessionManager: SessionMa
                 contentPadding = PaddingValues(vertical = 8.dp)
             ) {
                 items(hogarInteligente) { hogarInteligente ->
-                    ProductoItem(producto = hogarInteligente)
+                    ProductoItem(producto = hogarInteligente, navController = navController)
                 }
             }
         }
