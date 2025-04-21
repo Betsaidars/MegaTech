@@ -162,19 +162,19 @@ fun MainView(navController: NavController, sessionManager: SessionManager) {
                 .padding(16.dp),
             horizontalArrangement = Arrangement.SpaceEvenly
         ) {
-            IconButton(onClick = { /* Navegar a la ventana del icono 1 */ },
+            IconButton(onClick = { navController.navigate("televicion") },
                 modifier = Modifier.clip(CircleShape).border(1.dp, Color.LightGray, CircleShape)) {
                 Icon(painterResource(id = R.drawable.televicion), contentDescription = "Icono 1")
             }
-            IconButton(onClick = { /* Navegar a la ventana del icono 2 */ },
+            IconButton(onClick = { navController.navigate("consola") },
                 modifier = Modifier.clip(CircleShape).border(1.dp, Color.LightGray, CircleShape)) {
                 Icon(painterResource(id = R.drawable.consola), contentDescription = "Icono 2")
             }
-            IconButton(onClick = { /* Navegar a la ventana del icono 3 */ },
+            IconButton(onClick = { navController.navigate("ordenador") },
                 modifier = Modifier.clip(CircleShape).border(1.dp, Color.LightGray, CircleShape)) {
                 Icon(painterResource(id = R.drawable.ordenador), contentDescription = "Icono 3")
             }
-            IconButton(onClick = { /* Navegar a la ventana del icono 4 */ },
+            IconButton(onClick = { navController.navigate("home") },
                 modifier = Modifier.clip(CircleShape).border(1.dp, Color.LightGray, CircleShape)) {
                 Icon(painterResource(id = R.drawable.home), contentDescription = "Icono 4")
             }
@@ -186,19 +186,19 @@ fun MainView(navController: NavController, sessionManager: SessionManager) {
                 .padding(16.dp),
             horizontalArrangement = Arrangement.SpaceEvenly
         ) {
-            IconButton(onClick = { /* Navegar a la ventana del icono 5 */ },
+            IconButton(onClick = { navController.navigate("camara") },
                 modifier = Modifier.clip(CircleShape).border(1.dp, Color.LightGray, CircleShape)) {
                 Icon(painterResource(id = R.drawable.camara), contentDescription = "Icono 5")
             }
-            IconButton(onClick = { /* Navegar a la ventana del icono 6 */ },
+            IconButton(onClick = { navController.navigate("sonido") },
                 modifier = Modifier.clip(CircleShape).border(1.dp, Color.LightGray, CircleShape)) {
                 Icon(painterResource(id = R.drawable.sonido), contentDescription = "Icono 6")
             }
-            IconButton(onClick = { /* Navegar a la ventana del icono 7 */ },
+            IconButton(onClick = { navController.navigate("phone") },
                 modifier = Modifier.clip(CircleShape).border(1.dp, Color.LightGray, CircleShape)) {
                 Icon(painterResource(id = R.drawable.phone), contentDescription = "Icono 7")
             }
-            IconButton(onClick = { /* Navegar a la ventana del icono 8 */ },
+            IconButton(onClick = { navController.navigate("reloj") },
                 modifier = Modifier.clip(CircleShape).border(1.dp, Color.LightGray, CircleShape)) {
                 Icon(painterResource(id = R.drawable.reloj), contentDescription = "Icono 8")
             }
