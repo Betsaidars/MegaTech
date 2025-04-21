@@ -1,30 +1,16 @@
 package com.example.megatech.Components
 
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.derivedStateOf
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -37,22 +23,20 @@ import coil.compose.rememberAsyncImagePainter
 import com.example.megatech.SessionManager
 import com.example.megatech.ViewModels.MainViewModel
 import com.example.megatech.ViewModels.MainViewModelFactory
+import android.util.Log
 
 @Composable
 fun DetalleProductoScreen(itemId: String?, sessionManager: SessionManager) {
     val mainViewModel: MainViewModel = viewModel(factory = MainViewModelFactory(sessionManager))
     val producto by mainViewModel.getItemById(itemId).collectAsState(initial = null)
 
-    var selectedColor by remember { mutableStateOf<String?>(null) }
-    val displayedImageUrl by remember(producto, selectedColor) {
+    var selectedColorIndex by remember { mutableStateOf<Int?>(null) }
+    val displayedImageUrl by remember(producto, selectedColorIndex) {
         derivedStateOf {
-            if (selectedColor.isNullOrEmpty()) {
-                producto?.imageUrl?.firstOrNull()
+            if (selectedColorIndex != null && producto?.imageUrl?.isNotEmpty() == true) {
+                producto!!.imageUrl.getOrNull(selectedColorIndex!!)
             } else {
-                // Lógica para obtener la URL de la imagen según el color seleccionado
-                // Esto dependerá de cómo tu API maneja las imágenes por color.
-                // Por ahora, mostraremos la primera imagen si no hay coincidencia específica.
-                producto?.imageUrl?.firstOrNull()
+                producto?.imageUrl?.firstOrNull() // Muestra la primera imagen por defecto
             }
         }
     }
@@ -71,7 +55,6 @@ fun DetalleProductoScreen(itemId: String?, sessionManager: SessionManager) {
         if (producto == null) {
             Text("Cargando detalles del producto...")
         } else {
-            // Mostrar los detalles del producto
             displayedImageUrl?.let { url ->
                 Image(
                     painter = rememberAsyncImagePainter(url),
@@ -103,27 +86,29 @@ fun DetalleProductoScreen(itemId: String?, sessionManager: SessionManager) {
 
             Text(text = "Precio: $${producto?.price ?: ""}", fontWeight = FontWeight.Bold)
 
-            Log.d("DETAIL_PRODUCT_CHECK", "Producto in DetalleProductoScreen: $producto")
-            producto?.availableColors?.let { colors ->
-                Log.d("DETAIL_COLORS_CHECK", "Available colors for ${producto?.name}: $colors")
-                if (colors.isNotEmpty()) {
+            producto!!.availableColors?.let { colors ->
+                if (colors.isNotEmpty() && producto!!.imageUrl.isNotEmpty()) {
+
                     Spacer(modifier = Modifier.height(16.dp))
+
                     Text("Colores Disponibles:", fontWeight = FontWeight.Bold)
                     LazyRow(
                         modifier = Modifier.padding(top = 8.dp)
                     ) {
-                        items(colors) { color ->
+                        itemsIndexed(colors) { index, colorName -> // Usamos itemsIndexed para obtener el índice
                             ColorCircle(
-                                color = color,
-                                isSelected = color == selectedColor,
-                                onColorSelected = { selectedColor = it }
+                                color = colorName,
+                                isSelected = index == selectedColorIndex,
+                                onColorSelected = {
+                                    selectedColorIndex = index
+                                    Log.d("COLOR_SELECTED", "Color: $colorName, Index: $index")
+                                }
                             )
                             Spacer(modifier = Modifier.width(8.dp))
                         }
                     }
                 }
             }
-
         }
     }
 }
