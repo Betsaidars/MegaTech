@@ -68,23 +68,6 @@ fun DetalleProductoScreen(itemId: String?, sessionManager: SessionManager) {
                     contentScale = ContentScale.Inside
                 )
             }
-            Text(text = producto?.name ?: "", fontWeight = FontWeight.Bold)
-
-            Spacer(modifier = Modifier.height(8.dp))
-
-            Text(text = producto?.brand ?: "", fontWeight = FontWeight.Bold)
-
-            Spacer(modifier = Modifier.height(8.dp))
-
-            Text(text = "Descripción: ${producto?.description ?: ""}")
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            Text(text = "Modelo: ${producto?.model ?: ""}", fontWeight = FontWeight.Bold)
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            Text(text = "Precio: $${producto?.price ?: ""}", fontWeight = FontWeight.Bold)
 
             producto!!.availableColors?.let { colors ->
                 if (colors.isNotEmpty() && producto!!.imageUrl.isNotEmpty()) {
@@ -109,6 +92,34 @@ fun DetalleProductoScreen(itemId: String?, sessionManager: SessionManager) {
                     }
                 }
             }
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            Text(text = producto?.name ?: "", fontWeight = FontWeight.Bold)
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            Text(text = producto?.brand ?: "", fontWeight = FontWeight.Bold)
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            Text(text = "Descripción: ${producto?.description ?: ""}")
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            Text(text = "Modelo: ${producto?.model ?: ""}", fontWeight = FontWeight.Bold)
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            Text(text = "Precio: $${producto?.price ?: ""}", fontWeight = FontWeight.Bold)
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            producto?.rating?.let { ratingValue ->
+                RatingStars(rating = ratingValue)
+            }
+
+
         }
     }
 }
