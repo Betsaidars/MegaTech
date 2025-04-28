@@ -27,6 +27,7 @@ fun NavManager(sessionManager: SessionManager, listaDeDeseosViewModel: ListaDeDe
 
     val navController = rememberNavController()
 
+
     NavHost(navController = navController, startDestination = "Login") {
 
         composable("Login") {

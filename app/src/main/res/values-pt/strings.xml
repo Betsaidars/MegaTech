@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">MegaTech</string>
+    <string name="menu_profile">Perfil</string>
+    <string name="menu_logout">Sair</string>
+    <string name="search_placeholder">Pesquisar produtos</string>
+    <string name="wishlist">Lista de desejos</string>
+    <string name="greeting">Olá</string>
+</resources>

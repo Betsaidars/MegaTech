@@ -58,6 +58,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.ui.res.stringResource
+import com.example.megatech.Data.LanguageSelector
 
 
 @OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
@@ -101,7 +103,7 @@ fun MainView(navController: NavController, sessionManager: SessionManager) {
                     onDismissRequest = { expandedMenu = false }
                 ) {
                     DropdownMenuItem(
-                        text = { Text("Perfil") },
+                        text = { Text(stringResource(R.string.menu_profile)) },
                         onClick = {
                             expandedMenu = false
                             navController.navigate("profile")
@@ -109,7 +111,7 @@ fun MainView(navController: NavController, sessionManager: SessionManager) {
                     )
 
                     DropdownMenuItem(
-                        text = { Text("Cerrar sesión") },
+                        text = { Text((stringResource(R.string.menu_logout))) },
                         onClick = {
                             expandedMenu = false
                             sessionManager.logout()
@@ -141,7 +143,7 @@ fun MainView(navController: NavController, sessionManager: SessionManager) {
                     value = searchText,
                     onValueChange = { searchText = it },
                     leadingIcon = { Icon(Icons.Filled.Search, contentDescription = "Buscar") },
-                    placeholder = { Text("Buscar productos") },
+                    placeholder = { Text(stringResource(R.string.search_placeholder)) },
                     modifier = Modifier
                         .weight(1f)
                         .height(30.dp)
@@ -156,6 +158,7 @@ fun MainView(navController: NavController, sessionManager: SessionManager) {
                 IconButton(onClick = { navController.navigate("listaDeDeseos") }) { // Navegar a la lista de deseos
                     Icon(Icons.Filled.FavoriteBorder, contentDescription = "Lista de deseos")
                 }
+                LanguageSelector()
             }
         }
 
