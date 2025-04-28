@@ -22,7 +22,7 @@ class MainActivity : ComponentActivity() {
         LoginViewModelFactory(sessionManager)
     }
     private val listaDeDeseosViewModel: ListaDeDeseosViewModel by viewModels() {
-        ListaDeDeseosViewModelFactory()
+        ListaDeDeseosViewModelFactory(this) // Asegúrate de que 'this' (el Context) no sea nulo aquí
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
