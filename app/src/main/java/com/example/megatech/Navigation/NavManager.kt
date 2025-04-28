@@ -8,10 +8,11 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.megatech.Components.DetalleProductoScreen
 import com.example.megatech.SessionManager
+import com.example.megatech.ViewModels.ListaDeDeseosViewModel
 import com.example.megatech.Views.CamaraView
 import com.example.megatech.Views.ConsolaView
-import com.example.megatech.Views.DiscountView
 import com.example.megatech.Views.HogarInteligenteView
+import com.example.megatech.Views.ListaDeDeseosView
 import com.example.megatech.Views.MainView
 import com.example.megatech.Views.OrdenadoresView
 import com.example.megatech.Views.PhoneView
@@ -22,7 +23,7 @@ import com.example.megatech.Views.TelevisoresView
 
 
 @Composable
-fun NavManager(sessionManager: SessionManager){
+fun NavManager(sessionManager: SessionManager, listaDeDeseosViewModel: ListaDeDeseosViewModel){
 
     val navController = rememberNavController()
 
@@ -77,20 +78,25 @@ fun NavManager(sessionManager: SessionManager){
             RelojesView(navController, sessionManager)
         }
 
+        composable("listaDeDeseos") {
+            ListaDeDeseosView(navController = navController, listaDeDeseosViewModel = listaDeDeseosViewModel)
+        }
+
         composable(
             "detalleProducto/{itemId}",
             arguments = listOf(navArgument("itemId") { type = NavType.StringType })
         ) { backStackEntry ->
             val itemId = backStackEntry.arguments?.getString("itemId")
-            DetalleProductoScreen(itemId = itemId, sessionManager, navController) // Crea este Composable
+            DetalleProductoScreen(itemId = itemId, sessionManager, navController, listaDeDeseosViewModel)
         }
 
         composable("itemDetail/{itemId}",
             arguments = listOf(navArgument("itemId") { type = NavType.StringType })
         ) { backStackEntry ->
             val itemId = backStackEntry.arguments?.getString("itemId")
-            DetalleProductoScreen(itemId = itemId, sessionManager = sessionManager, navController)
+            DetalleProductoScreen(itemId = itemId, sessionManager = sessionManager, navController, listaDeDeseosViewModel)
         }
+
 
 
 

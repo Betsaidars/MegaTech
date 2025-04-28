@@ -153,7 +153,7 @@ fun MainView(navController: NavController, sessionManager: SessionManager) {
                 IconButton(onClick = { /* TODO: Navegar al carrito */ }) {
                     Icon(Icons.Filled.ShoppingCart, contentDescription = "Carrito")
                 }
-                IconButton(onClick = { /* TODO: Navegar a la lista de deseos */ }) {
+                IconButton(onClick = { navController.navigate("listaDeDeseos") }) { // Navegar a la lista de deseos
                     Icon(Icons.Filled.FavoriteBorder, contentDescription = "Lista de deseos")
                 }
             }

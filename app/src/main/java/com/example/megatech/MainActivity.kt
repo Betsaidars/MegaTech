@@ -9,6 +9,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import com.example.megatech.Navigation.NavManager
+import com.example.megatech.ViewModels.ListaDeDeseosViewModel
+import com.example.megatech.ViewModels.ListaDeDeseosViewModelFactory
 import com.example.megatech.ViewModels.LoginViewModel
 import com.example.megatech.ViewModels.LoginViewModelFactory
 import com.example.megatech.ui.theme.MegaTechTheme
@@ -18,6 +20,9 @@ class MainActivity : ComponentActivity() {
     private lateinit var sessionManager: SessionManager
     private val loginViewModel: LoginViewModel by viewModels(){
         LoginViewModelFactory(sessionManager)
+    }
+    private val listaDeDeseosViewModel: ListaDeDeseosViewModel by viewModels() {
+        ListaDeDeseosViewModelFactory()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,7 +36,7 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 )
                     {
-                        NavManager(sessionManager)
+                        NavManager(sessionManager, listaDeDeseosViewModel)
                     }
             }
         }
