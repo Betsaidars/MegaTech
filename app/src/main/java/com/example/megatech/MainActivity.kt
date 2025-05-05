@@ -11,6 +11,8 @@ import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import androidx.core.os.LocaleListCompat
 import com.example.megatech.Navigation.NavManager
+import com.example.megatech.ViewModels.CarritoDeCompraViewModel
+import com.example.megatech.ViewModels.CarritoDeCompraViewModelFactory
 import com.example.megatech.ViewModels.ListaDeDeseosViewModel
 import com.example.megatech.ViewModels.ListaDeDeseosViewModelFactory
 import com.example.megatech.ViewModels.LoginViewModel
@@ -26,6 +28,9 @@ class MainActivity : ComponentActivity() {
     }
     private val listaDeDeseosViewModel: ListaDeDeseosViewModel by viewModels() {
         ListaDeDeseosViewModelFactory(this) // Asegúrate de que 'this' (el Context) no sea nulo aquí
+    }
+    private val carritoDeCompraViewModel: CarritoDeCompraViewModel by viewModels() {
+        CarritoDeCompraViewModelFactory(this) // Asegúrate de que 'this' (el Context) no sea nulo aquí
     }
 
 
@@ -47,7 +52,7 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 )
                     {
-                        NavManager(sessionManager, listaDeDeseosViewModel)
+                        NavManager(sessionManager, listaDeDeseosViewModel, carritoDeCompraViewModel)
                     }
             }
         }

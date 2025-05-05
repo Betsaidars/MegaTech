@@ -24,12 +24,9 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.megatech.Components.ProductoItem
-import com.example.megatech.Model.ItemsModel
 import com.example.megatech.ViewModels.ListaDeDeseosViewModel
-import com.example.megatech.ViewModels.ListaDeDeseosViewModelFactory
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

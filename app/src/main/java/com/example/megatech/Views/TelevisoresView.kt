@@ -18,7 +18,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.ShoppingCart
-import androidx.compose.material3.Card
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
@@ -126,7 +125,7 @@ fun TelevisoresView(navController: NavController, sessionManager: SessionManager
 
             // Iconos finales
             Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                IconButton(onClick = { /* TODO: Navegar al carrito */ }) {
+                IconButton(onClick = { navController.navigate("carritoDeCompra") }) {
                     Icon(Icons.Filled.ShoppingCart, contentDescription = "Carrito")
                 }
                 IconButton(onClick = { navController.navigate("listaDeDeseos") }) {

@@ -8,8 +8,10 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.megatech.Components.DetalleProductoScreen
 import com.example.megatech.SessionManager
+import com.example.megatech.ViewModels.CarritoDeCompraViewModel
 import com.example.megatech.ViewModels.ListaDeDeseosViewModel
 import com.example.megatech.Views.CamaraView
+import com.example.megatech.Views.CarritoDeCompraView
 import com.example.megatech.Views.ConsolaView
 import com.example.megatech.Views.HogarInteligenteView
 import com.example.megatech.Views.ListaDeDeseosView
@@ -23,7 +25,7 @@ import com.example.megatech.Views.TelevisoresView
 
 
 @Composable
-fun NavManager(sessionManager: SessionManager, listaDeDeseosViewModel: ListaDeDeseosViewModel){
+fun NavManager(sessionManager: SessionManager, listaDeDeseosViewModel: ListaDeDeseosViewModel, carritoDeCompraViewModel: CarritoDeCompraViewModel){
 
     val navController = rememberNavController()
 
@@ -47,7 +49,7 @@ fun NavManager(sessionManager: SessionManager, listaDeDeseosViewModel: ListaDeDe
 //            DiscountView(navController, sessionManager, discountPercentage)
 //        }
 
-        composable("televicion"){
+        composable("television"){
             TelevisoresView(navController, sessionManager)
         }
 
@@ -83,19 +85,23 @@ fun NavManager(sessionManager: SessionManager, listaDeDeseosViewModel: ListaDeDe
             ListaDeDeseosView(navController = navController, listaDeDeseosViewModel = listaDeDeseosViewModel)
         }
 
+        composable("carritoDeCompra") {
+            CarritoDeCompraView(navController = navController, carritoDeCompraViewModel = carritoDeCompraViewModel, listaDeDeseosViewModel)
+        }
+
         composable(
             "detalleProducto/{itemId}",
             arguments = listOf(navArgument("itemId") { type = NavType.StringType })
         ) { backStackEntry ->
             val itemId = backStackEntry.arguments?.getString("itemId")
-            DetalleProductoScreen(itemId = itemId, sessionManager, navController, listaDeDeseosViewModel)
+            DetalleProductoScreen(itemId = itemId, sessionManager, navController, listaDeDeseosViewModel, carritoDeCompraViewModel)
         }
 
         composable("itemDetail/{itemId}",
             arguments = listOf(navArgument("itemId") { type = NavType.StringType })
         ) { backStackEntry ->
             val itemId = backStackEntry.arguments?.getString("itemId")
-            DetalleProductoScreen(itemId = itemId, sessionManager = sessionManager, navController, listaDeDeseosViewModel)
+            DetalleProductoScreen(itemId = itemId, sessionManager = sessionManager, navController, listaDeDeseosViewModel, carritoDeCompraViewModel)
         }
 
 

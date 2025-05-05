@@ -152,7 +152,7 @@ fun MainView(navController: NavController, sessionManager: SessionManager) {
 
             // Iconos finales
             Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                IconButton(onClick = { /* TODO: Navegar al carrito */ }) {
+                IconButton(onClick = { navController.navigate("carritoDeCompra") }) {
                     Icon(Icons.Filled.ShoppingCart, contentDescription = "Carrito")
                 }
                 IconButton(onClick = { navController.navigate("listaDeDeseos") }) { // Navegar a la lista de deseos
@@ -203,7 +203,7 @@ fun MainView(navController: NavController, sessionManager: SessionManager) {
                 .padding(vertical = 8.dp, horizontal = 16.dp),
             horizontalArrangement = Arrangement.SpaceEvenly
         ) {
-            IconButton(onClick = { navController.navigate("televicion") },
+            IconButton(onClick = { navController.navigate("television") },
                 modifier = Modifier.clip(CircleShape).border(1.dp, Color.LightGray, CircleShape)) {
                 Icon(painterResource(id = R.drawable.televicion), contentDescription = "Televisión")
             }

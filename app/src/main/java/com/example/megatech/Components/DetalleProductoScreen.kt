@@ -14,6 +14,7 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -36,16 +37,20 @@ import androidx.navigation.NavHostController
 import coil.compose.rememberAsyncImagePainter
 import com.example.megatech.R
 import com.example.megatech.SessionManager
+import com.example.megatech.ViewModels.CarritoDeCompraViewModel
 import com.example.megatech.ViewModels.ListaDeDeseosViewModel
 import com.example.megatech.ViewModels.ListaDeDeseosViewModelFactory
 import com.example.megatech.ViewModels.MainViewModel
 import com.example.megatech.ViewModels.MainViewModelFactory
+import com.example.megatech.ui.theme.Pink80
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DetalleProductoScreen(itemId: String?, sessionManager: SessionManager, navController: NavHostController, listaDeDeseosViewModel: ListaDeDeseosViewModel) {
+fun DetalleProductoScreen(itemId: String?, sessionManager: SessionManager, navController: NavHostController, listaDeDeseosViewModel: ListaDeDeseosViewModel, carritoDeCompraViewModel: CarritoDeCompraViewModel) {
     val mainViewModel: MainViewModel = viewModel(factory = MainViewModelFactory(sessionManager))
     val producto by mainViewModel.getItemById(itemId).collectAsState(initial = null)
+
+    val rosa = Color(0xFFEC407A)
 
     var selectedColorIndex by remember { mutableStateOf<Int?>(null) }
     val displayedImageUrl by remember(producto, selectedColorIndex) {
@@ -59,10 +64,17 @@ fun DetalleProductoScreen(itemId: String?, sessionManager: SessionManager, navCo
     }
 
     val listaDeDeseos by listaDeDeseosViewModel.wishlistItems.collectAsState()
+    val carritoDeCompra by carritoDeCompraViewModel.itemCarrito.collectAsState()
 
     var isFavoriteBottom by remember(producto, listaDeDeseos) {
         mutableStateOf(producto?.id?.let { itemId ->
             listaDeDeseos.any { it.id == itemId }
+        } ?: false)
+    }
+
+    var isCarritoBottom by remember(producto, carritoDeCompra) {
+        mutableStateOf(producto?.id?.let { itemId ->
+            carritoDeCompra.any { it.id == itemId }
         } ?: false)
     }
 
@@ -85,7 +97,7 @@ fun DetalleProductoScreen(itemId: String?, sessionManager: SessionManager, navCo
                 IconButton(onClick = { navController.navigate("listaDeDeseos") }) {
                     Icon(Icons.Filled.FavoriteBorder, contentDescription = "Añadir a deseados")
                 }
-                IconButton(onClick = { /* TODO: Implementar navegación al carrito */ }) {
+                IconButton(onClick = { navController.navigate("carritoDeCompra") }) {
                     Icon(Icons.Filled.ShoppingCart, contentDescription = "Carrito")
                 }
             },
@@ -164,38 +176,46 @@ fun DetalleProductoScreen(itemId: String?, sessionManager: SessionManager, navCo
             verticalAlignment = Alignment.CenterVertically
         ) {
             Button(
-                onClick = { /* TODO: Implementar lógica de añadir al carrito */ },
+                onClick = {
+                    producto?.let {
+                        carritoDeCompraViewModel.addItemToCarritolist(it)
+                        isCarritoBottom = true // Actualizar el estado visual del carrito
+                        Log.d("DetalleProducto", "Añadido al carrito: ${it.id}")
+                    }
+                },
                 modifier = Modifier
                     .weight(1f)
-                    .padding(end = 8.dp)
+                    .padding(end = 8.dp),
+                colors = ButtonDefaults.buttonColors(containerColor = rosa)
             ) {
                 Icon(
-                    painter = painterResource(id = R.drawable.shopping_cart),
+                    Icons.Filled.ShoppingCart,
                     contentDescription = "Añadir al carrito",
-                    modifier = Modifier.size(24.dp)
+                    modifier = Modifier.size(24.dp),
+                    tint = Color.White
                 )
                 Spacer(modifier = Modifier.width(4.dp))
-                Text("Añadir al carrito")
+                Text("Añadir al carrito", color = Color.White)
             }
 
-            IconButton(onClick = {
-                producto?.let {
-                    Log.d("DetalleProducto", "Antes del cambio: isFavoriteBottom = $isFavoriteBottom")
-                    isFavoriteBottom = !isFavoriteBottom
-                    Log.d("DetalleProducto", "Después del cambio: isFavoriteBottom = $isFavoriteBottom")
-                    if (isFavoriteBottom) {
-                        listaDeDeseosViewModel.addItemToWishlist(it)
-                        Log.d("DetalleProducto", "Añadiendo a la lista: ${it.id}")
-                    } else {
-                        listaDeDeseosViewModel.removeItemFromWishlist(it)
-                        Log.d("DetalleProducto", "Eliminando de la lista: ${it.id}")
-
+            IconButton(
+                onClick = {
+                    producto?.let {
+                        isFavoriteBottom = !isFavoriteBottom
+                        if (isFavoriteBottom) {
+                            listaDeDeseosViewModel.addItemToWishlist(it)
+                            Log.d("DetalleProducto", "Añadido a la lista de deseos: ${it.id}")
+                        } else {
+                            listaDeDeseosViewModel.removeItemFromWishlist(it)
+                            Log.d("DetalleProducto", "Eliminado de la lista de deseos: ${it.id}")
+                        }
                     }
-                }
-            }) {
+                },
+                modifier = Modifier.padding(start = 8.dp)
+            ) {
                 Icon(
                     Icons.Filled.FavoriteBorder,
-                    contentDescription = "Añadir a deseados",
+                    contentDescription = if (isFavoriteBottom) "Eliminar de deseados" else "Añadir a deseados",
                     modifier = Modifier.size(24.dp),
                     tint = if (isFavoriteBottom) Color.Black else MaterialTheme.colorScheme.onBackground
                 )
@@ -203,7 +223,6 @@ fun DetalleProductoScreen(itemId: String?, sessionManager: SessionManager, navCo
         }
     }
 }
-
 @Composable
 fun ColorCircle(color: String?, isSelected: Boolean, onColorSelected: (String?) -> Unit) {
     Log.d("COLOR_CIRCLE_CHECK", "Color received: $color, isSelected: $isSelected")

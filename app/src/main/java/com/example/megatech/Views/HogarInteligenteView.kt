@@ -125,7 +125,7 @@ fun HogarInteligenteView(navController: NavController, sessionManager: SessionMa
 
             // Iconos finales
             Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                IconButton(onClick = { /* TODO: Navegar al carrito */ }) {
+                IconButton(onClick = { navController.navigate("carritoDeCompra") }) {
                     Icon(Icons.Filled.ShoppingCart, contentDescription = "Carrito")
                 }
                 IconButton(onClick = { navController.navigate("listaDeDeseos") }) {
