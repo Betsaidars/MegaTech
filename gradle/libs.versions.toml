@@ -19,6 +19,7 @@ loggingInterceptor = "4.9.3"
 loggingInterceptorVersion = "4.11.0"
 navigationCompose = "2.5.3"
 runtimeLivedata = "1.7.8"
+animationCoreLint = "1.8.0"
 
 [libraries]
 accompanist-pager = { module = "com.google.accompanist:accompanist-pager", version.ref = "accompanistPager" }
@@ -52,6 +53,7 @@ androidx-runtime-livedata = { group = "androidx.compose.runtime", name = "runtim
 logging-interceptor-v493 = { module = "com.squareup.okhttp3:logging-interceptor", version.ref = "loggingInterceptor" }
 okhttp3-logging-interceptor = { module = "com.squareup.okhttp3:logging-interceptor", version.ref = "loggingInterceptorVersion" }
 retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "converterGson" }
+androidx-animation-core-lint = { group = "androidx.compose.animation", name = "animation-core-lint", version.ref = "animationCoreLint" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

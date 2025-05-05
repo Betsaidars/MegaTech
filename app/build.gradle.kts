@@ -47,6 +47,7 @@ dependencies {
     implementation(libs.firebase.firestore.ktx)
     implementation(libs.firebase.database.ktx)
     implementation(libs.androidx.runtime.livedata)
+    implementation(libs.androidx.animation.core.lint)
 
     val nav_version = "2.5.3"
     implementation(libs.androidx.navigation.compose)

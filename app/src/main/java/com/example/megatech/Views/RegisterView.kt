@@ -6,7 +6,10 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
 import androidx.compose.material3.Button
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -22,10 +25,13 @@ import androidx.navigation.NavController
 import com.example.megatech.SessionManager
 import com.example.megatech.ViewModels.RegisterViewModel
 import com.example.megatech.ViewModels.RegisterViewModelFactory
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.livedata.observeAsState
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.res.painterResource
+import com.example.megatech.R
 
 @Composable
 fun RegisterView(navController: NavController, sessionManager: SessionManager) {
@@ -33,6 +39,9 @@ fun RegisterView(navController: NavController, sessionManager: SessionManager) {
 
     val registrationMessage by registerViewModel.registrationMessageLiveData.observeAsState()
     val registeredUserId by registerViewModel.registeredUserIdLiveData.observeAsState()
+
+    var passwordVisible by remember { mutableStateOf(false) }
+    var confirmPasswordVisible by remember { mutableStateOf(false) }
 
     // Observar el evento de éxito del registro
     LaunchedEffect(registerViewModel.registrationSuccess) {
@@ -65,14 +74,41 @@ fun RegisterView(navController: NavController, sessionManager: SessionManager) {
         OutlinedTextField(
             value = registerViewModel.password.value,
             onValueChange = { registerViewModel.password.value = it },
-            label = { Text("Contraseña") }
+            label = { Text("Contraseña") },
+            visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
+            trailingIcon = {
+                val imageResource = if (passwordVisible)
+                    R.drawable.visibility // Reemplaza con el nombre de tu icono de ojo abierto
+                else
+                    R.drawable.visibility_off
+
+                val description = if (passwordVisible) "Ocultar contraseña" else "Mostrar contraseña"
+
+                IconButton(onClick = { passwordVisible = !passwordVisible }) {
+                    Icon(painter = painterResource(id = imageResource), contentDescription = description)
+                }
+            }
+
         )
         Spacer(modifier = Modifier.height(8.dp))
         OutlinedTextField(
             value = registerViewModel.confirmPassword.value,
             onValueChange = { registerViewModel.confirmPassword.value = it },
             label = { Text("Confirmar Contraseña") },
-            isError = registerViewModel.passwordError.value
+            isError = registerViewModel.passwordError.value,
+            visualTransformation = if (confirmPasswordVisible) VisualTransformation.None else PasswordVisualTransformation(), // Oculta la contraseña por defecto
+            trailingIcon = {
+                val imageResource = if (passwordVisible)
+                    R.drawable.visibility // Reemplaza con el nombre de tu icono de ojo abierto
+                else
+                    R.drawable.visibility_off
+
+                val description = if (confirmPasswordVisible) "Ocultar contraseña" else "Mostrar contraseña"
+
+                IconButton(onClick = { confirmPasswordVisible = !confirmPasswordVisible }) {
+                    Icon(painter = painterResource(id = imageResource), contentDescription = description)
+                }
+            }
         )
         if (registerViewModel.passwordError.value) {
             Text(text = "Las contraseñas no coinciden", color = Color.Red)
