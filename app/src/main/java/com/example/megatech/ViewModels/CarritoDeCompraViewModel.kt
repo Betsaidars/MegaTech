@@ -10,6 +10,7 @@ import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
 class CarritoDeCompraViewModel(private val context: Context): ViewModel() {
@@ -18,6 +19,10 @@ class CarritoDeCompraViewModel(private val context: Context): ViewModel() {
     private val sharedPreferences = context.getSharedPreferences("cart_prefs", Context.MODE_PRIVATE)
     private val _itemCarrito = MutableStateFlow<List<ItemsModel>>(loadCarritolist())
     val itemCarrito: StateFlow<List<ItemsModel>> = _itemCarrito
+
+    val totalPrecioSeleccionado = _itemCarrito.map { items ->
+        items.sumOf { it.price ?: 0.0 }
+    }
 
     init {
         Log.d("CarritoCompraInit", "Lista cargada al inicio con ${_itemCarrito.value.size} items")
@@ -52,10 +57,9 @@ class CarritoDeCompraViewModel(private val context: Context): ViewModel() {
         val jsonString = sharedPreferences.getString("carritolist", null)
         return jsonString?.let {
             val type = object : TypeToken<List<ItemsModel>>() {}.type
-            gson.fromJson<List<ItemsModel>>(it, type) // <--- Aquí ocurre el NullPointerException
+            gson.fromJson<List<ItemsModel>>(it, type) ?: emptyList()
         } ?: emptyList()
     }
-
 
 
 

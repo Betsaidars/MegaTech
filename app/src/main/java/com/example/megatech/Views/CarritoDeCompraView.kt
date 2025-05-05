@@ -45,6 +45,7 @@ import com.example.megatech.ViewModels.ListaDeDeseosViewModel
 @Composable
 fun CarritoDeCompraView(navController: NavController, carritoDeCompraViewModel: CarritoDeCompraViewModel, listaDeDeseosViewModel: ListaDeDeseosViewModel){
     val carritoListItems by carritoDeCompraViewModel.itemCarrito.collectAsState()
+    val totalPrecioSeleccionado by carritoDeCompraViewModel.totalPrecioSeleccionado.collectAsState(initial = 0.0)
 
     Scaffold(
         topBar = {
@@ -56,6 +57,21 @@ fun CarritoDeCompraView(navController: NavController, carritoDeCompraViewModel: 
                     }
                 }
             )
+        },
+        bottomBar = {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(text = "Total:", style = MaterialTheme.typography.headlineMedium)
+                Text(text = "${String.format("%.2f", totalPrecioSeleccionado)}€", style = MaterialTheme.typography.headlineMedium)
+                Button(onClick = { /* TODO: Implementar lógica de compra */ }) {
+                    Text("Comprar")
+                }
+            }
         }
     ) { paddingValues ->
         Column(
