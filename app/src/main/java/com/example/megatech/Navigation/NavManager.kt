@@ -79,7 +79,7 @@ fun NavManager(sessionManager: SessionManager, listaDeDeseosViewModel: ListaDeDe
         }
 
         composable("listaDeDeseos") {
-            ListaDeDeseosView(navController = navController, listaDeDeseosViewModel = listaDeDeseosViewModel)
+            ListaDeDeseosView(navController = navController, listaDeDeseosViewModel = listaDeDeseosViewModel, carritoDeCompraViewModel)
         }
 
         composable("carritoDeCompra") {

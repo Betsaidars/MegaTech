@@ -12,12 +12,16 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
-class ListaDeDeseosViewModel(private val context: Context): ViewModel(){
+class ListaDeDeseosViewModel(private val context: Context) : ViewModel() {
 
     private val gson = Gson()
-    private val sharedPreferences = context.getSharedPreferences("wishlist_prefs", Context.MODE_PRIVATE)
+    private val sharedPreferences =
+        context.getSharedPreferences("wishlist_prefs", Context.MODE_PRIVATE)
     private val _wishlistItems = MutableStateFlow<List<ItemsModel>>(loadWishlist())
     val wishlistItems: StateFlow<List<ItemsModel>> = _wishlistItems
+
+    private val _cartItems = MutableStateFlow<List<ItemsModel>>(emptyList())  // ADD THIS LINE
+    val cartItems: StateFlow<List<ItemsModel>> = _cartItems
 
 
     init {
@@ -57,6 +61,12 @@ class ListaDeDeseosViewModel(private val context: Context): ViewModel(){
         } ?: emptyList()
     }
 
+    fun addItemToCart(item: ItemsModel) {
+        val updatedCartList = _cartItems.value + item
+        _cartItems.value = updatedCartList
+        Log.d("CartViewModel", "Item added to cart. Cart size: ${_cartItems.value.size}")
+        //TODO: Save Cart Items
+    }
 
 
 }
