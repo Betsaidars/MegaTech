@@ -10,6 +10,7 @@ import com.example.megatech.Components.DetalleProductoScreen
 import com.example.megatech.SessionManager
 import com.example.megatech.ViewModels.CarritoDeCompraViewModel
 import com.example.megatech.ViewModels.ListaDeDeseosViewModel
+import com.example.megatech.Views.BannerCincuentaView
 import com.example.megatech.Views.BannerTreintaView
 import com.example.megatech.Views.CamaraView
 import com.example.megatech.Views.CarritoDeCompraView
@@ -44,11 +45,6 @@ fun NavManager(sessionManager: SessionManager, listaDeDeseosViewModel: ListaDeDe
         composable("Main"){
             MainView(navController, sessionManager)
         }
-
-//        composable("Discount") { backStackEntry ->
-//            val discountPercentage = backStackEntry.arguments?.getString("discountPercentage")?.toIntOrNull() ?: 30 // Default 30%
-//            DiscountView(navController, sessionManager, discountPercentage)
-//        }
 
         composable("television"){
             TelevisoresView(navController, sessionManager)
@@ -91,7 +87,12 @@ fun NavManager(sessionManager: SessionManager, listaDeDeseosViewModel: ListaDeDe
         }
 
         composable("DiscountTreinta") {
-            BannerTreintaView(navController = navController) }
+            BannerTreintaView(navController = navController)
+        }
+
+        composable("DiscountCincuenta") {
+            BannerCincuentaView(navController = navController)
+        }
 
         composable(
             "detalleProducto/{itemId}",

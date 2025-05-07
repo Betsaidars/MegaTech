@@ -3,7 +3,6 @@ package com.example.megatech.Views
 import androidx.annotation.OptIn
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -13,7 +12,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -22,7 +20,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
@@ -34,27 +31,26 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.media3.common.util.Log
 import androidx.media3.common.util.UnstableApi
 import androidx.navigation.NavController
-import coil.compose.AsyncImage
 import coil.compose.AsyncImagePainter
 import coil.compose.rememberAsyncImagePainter
 import com.example.megatech.SessionManager
+import com.example.megatech.ViewModels.BannerCincuentaViewModel
+import com.example.megatech.ViewModels.BannerCincuentaViewModelFactory
 import com.example.megatech.ViewModels.BannerTreintaViewModel
 import com.example.megatech.ViewModels.BannerTreintaViewModelFactory
-import com.example.megatech.ViewModels.MainViewModel
-import com.example.megatech.ViewModels.MainViewModelFactory
 
 @OptIn(UnstableApi::class)
 @Composable
-fun BannerTreintaView(navController: NavController){
+fun BannerCincuentaView(navController: NavController){
     val context = LocalContext.current
     val sessionManager = remember { SessionManager(context) }
-    val bannerTreintaViewModel: BannerTreintaViewModel = viewModel(factory = BannerTreintaViewModelFactory(sessionManager))
-    val discountedItems by bannerTreintaViewModel.discountedItemsTreinta.collectAsState()
-    val isLoading by bannerTreintaViewModel.isLoadingDiscountedItemsTreinta.collectAsState()
-    val error by bannerTreintaViewModel.errorLoadingDiscountedItemsTreinta.collectAsState()
+    val bannerCincuentaViewModel: BannerCincuentaViewModel = viewModel(factory = BannerCincuentaViewModelFactory(sessionManager))
+    val discountedFiftyItems by bannerCincuentaViewModel.discountedItemsCincuenta.collectAsState()
+    val isLoading by bannerCincuentaViewModel.isLoadingDiscountedItemsCincuenta.collectAsState()
+    val error by bannerCincuentaViewModel.errorLoadingDiscountedItemsCincuenta.collectAsState()
 
     LaunchedEffect(key1 = Unit) {
-        bannerTreintaViewModel.getDiscountedItemsTreinta()
+        bannerCincuentaViewModel.getDiscountedItemsCincuenta()
     }
 
     if (isLoading) {
@@ -68,7 +64,7 @@ fun BannerTreintaView(navController: NavController){
                 .padding(16.dp)
         ) {
             Text(
-                text = "Items con 30% de Descuento",
+                text = "Items con 50% de Descuento",
                 style = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.Bold),
                 modifier = Modifier.padding(bottom = 16.dp)
             )
@@ -77,23 +73,23 @@ fun BannerTreintaView(navController: NavController){
                 modifier = Modifier.fillMaxSize(),
                 contentPadding = PaddingValues(bottom = 16.dp)
             ) {
-                items(discountedItems) { itemWithDiscount ->
+                items(discountedFiftyItems) { itemWithFiftyDiscount ->
                     Log.d(
                         "BannerTreintaView",
-                        "Image URL: ${itemWithDiscount.imageUrlDiscoint}"
+                        "Image URL: ${itemWithFiftyDiscount.imageUrlDiscointFifty}"
                     )
                     Column(
                         modifier = Modifier
                             .clickable {
-                                navController.navigate("itemDetail/${itemWithDiscount.idDiscoint}")
+                                navController.navigate("itemDetail/${itemWithFiftyDiscount.idDiscointFifty}")
                             }
                             .padding(8.dp)
                     ) {
                         Image(
                             painter = rememberAsyncImagePainter(
-                                model = itemWithDiscount.imageUrlDiscoint ?: ""
+                                model = itemWithFiftyDiscount.imageUrlDiscointFifty ?: ""
                             ),
-                            contentDescription = itemWithDiscount.nameDiscoint,
+                            contentDescription = itemWithFiftyDiscount.nameDiscointFifty,
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .height(150.dp),
@@ -101,19 +97,19 @@ fun BannerTreintaView(navController: NavController){
                         )
 
                         Text(
-                            text = itemWithDiscount.nameDiscoint,
+                            text = itemWithFiftyDiscount.nameDiscointFifty,
                             style = MaterialTheme.typography.bodyMedium,
                             fontWeight = FontWeight.Bold,
                             modifier = Modifier.padding(top = 4.dp)
                         )
                         Text(
-                            text = "${itemWithDiscount.normalPriceDiscoint} €",
+                            text = "${itemWithFiftyDiscount.normalPriceDiscointFifty} €",
                             style = MaterialTheme.typography.bodySmall,
                             color = Color.Black,
                             textDecoration = TextDecoration.LineThrough
                         )
                         Text(
-                            text = "${itemWithDiscount.priceWithDiscoint} €",
+                            text = "${itemWithFiftyDiscount.priceWithDiscointFifty} €",
                             style = MaterialTheme.typography.bodySmall,
                             color = Color.Red
                         )

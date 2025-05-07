@@ -175,8 +175,14 @@ fun MainView(navController: NavController, sessionManager: SessionManager) {
                 modifier = Modifier
                     .fillMaxSize()
                     .clickable {
-                        navController.navigate("DiscountTreinta")
-                        println("Banner ${page + 1 } clicked")
+                        if (page == 0) { // Primer banner
+                            println("Navigating to DiscountTreinta")
+                            navController.navigate("DiscountTreinta")
+                        } else if (page == 1) { // Segundo banner (índice 1)
+                            println("Navigating to DiscountCincuenta")
+                            navController.navigate("DiscountCincuenta")
+                        }
+                        println("Banner ${page + 1} clicked")
                     }
             )
         }
