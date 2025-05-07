@@ -10,6 +10,7 @@ import com.example.megatech.Components.DetalleProductoScreen
 import com.example.megatech.SessionManager
 import com.example.megatech.ViewModels.CarritoDeCompraViewModel
 import com.example.megatech.ViewModels.ListaDeDeseosViewModel
+import com.example.megatech.Views.BannerTreintaView
 import com.example.megatech.Views.CamaraView
 import com.example.megatech.Views.CarritoDeCompraView
 import com.example.megatech.Views.ConsolaView
@@ -88,6 +89,9 @@ fun NavManager(sessionManager: SessionManager, listaDeDeseosViewModel: ListaDeDe
         composable("carritoDeCompra") {
             CarritoDeCompraView(navController = navController, carritoDeCompraViewModel = carritoDeCompraViewModel, listaDeDeseosViewModel)
         }
+
+        composable("DiscountTreinta") {
+            BannerTreintaView(navController = navController) }
 
         composable(
             "detalleProducto/{itemId}",

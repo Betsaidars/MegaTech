@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.megatech.Model.BannerModel
 import com.example.megatech.Model.ItemsModel
+import com.example.megatech.Model.ItemsWithDiscountModel
 import com.example.megatech.RetrofitCliente
 import com.example.megatech.SessionManager
 import kotlinx.coroutines.flow.Flow
@@ -29,7 +30,6 @@ class MainViewModel(private val sessionManager: SessionManager) : ViewModel() {
     private val _errorLoadingItems = MutableStateFlow<String?>(null)
     val errorLoadingItems: StateFlow<String?> = _errorLoadingItems
 
-
     private val _televisores = MutableStateFlow<List<ItemsModel>>(emptyList())
     val televisores: StateFlow<List<ItemsModel>> = _televisores
 
@@ -53,6 +53,7 @@ class MainViewModel(private val sessionManager: SessionManager) : ViewModel() {
 
     private val _relojes = MutableStateFlow<List<ItemsModel>>(emptyList())
     val relojes: StateFlow<List<ItemsModel>> = _relojes
+
 
     init {
         getAllItems()
@@ -113,6 +114,8 @@ class MainViewModel(private val sessionManager: SessionManager) : ViewModel() {
             foundItem
         }
     }
+
+
 
 
 }

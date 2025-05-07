@@ -48,6 +48,7 @@ dependencies {
     implementation(libs.firebase.database.ktx)
     implementation(libs.androidx.runtime.livedata)
     implementation(libs.androidx.animation.core.lint)
+    implementation(libs.androidx.media3.common.ktx)
 
     val nav_version = "2.5.3"
     implementation(libs.androidx.navigation.compose)
@@ -88,4 +89,6 @@ dependencies {
     debugImplementation(libs.androidx.ui.test.manifest)
 
     implementation(libs.androidx.appcompat)
+
+    implementation(libs.coil.compose.v260)
 }

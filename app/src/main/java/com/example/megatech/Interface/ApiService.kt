@@ -2,6 +2,7 @@ package com.example.megatech.Interface
 
 import com.example.megatech.Model.BannerModel
 import com.example.megatech.Model.ItemsModel
+import com.example.megatech.Model.ItemsWithDiscountModel
 import com.example.megatech.Model.UserModel
 import retrofit2.Response
 import retrofit2.http.Body
@@ -36,5 +37,10 @@ interface ApiService {
 
     @GET
     suspend fun getItemById(): Response<List<ItemsModel>>
+
+    // ITEMS EN BANNER DEL 30%
+
+    @GET("/api/items/discounted")
+    suspend fun getDiscountedItems(): Response<List<ItemsWithDiscountModel>>
 
 }

@@ -175,7 +175,7 @@ fun MainView(navController: NavController, sessionManager: SessionManager) {
                 modifier = Modifier
                     .fillMaxSize()
                     .clickable {
-                        navController.navigate("Discount")
+                        navController.navigate("DiscountTreinta")
                         println("Banner ${page + 1 } clicked")
                     }
             )
@@ -291,7 +291,7 @@ fun MainView(navController: NavController, sessionManager: SessionManager) {
                             modifier = Modifier.padding(top = 4.dp)
                         )
                         Text(
-                            text = "$${item.price}",
+                            text = "${item.price} €",
                             style = MaterialTheme.typography.bodySmall,
                             fontSize = 14.sp,
                             color = Color.Gray
