@@ -74,9 +74,9 @@ fun FormularioCompraView(
                 )
                 if (descuentoAplicado.value > 0.0) {
                     Text(
-                        text = "Descuento aplicado: ${String.format("%.2f", descuentoAplicado.value)}€ (${descuentoAplicadoCodigo.value})",
+                        text = "Descuento aplicado: ${String.format("%.2f", descuentoAplicado.value)}€ ",
                         style = MaterialTheme.typography.bodyMedium,
-                        color = Color.Green,
+                        color = Color(0xFF2ac518),
                         modifier = Modifier.padding(bottom = 8.dp)
                     )
                 }
