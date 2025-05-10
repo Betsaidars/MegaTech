@@ -43,6 +43,7 @@ fun FormularioCompraView(navController: NavController, carritoDeCompraViewModel:
 
     var codigoDescuento by remember { mutableStateOf("") }
     val descuentoAplicado = remember { mutableStateOf(0.0) }
+    val descuentoAplicadoCodigo = remember { mutableStateOf("") } // Para guardar el código aplicado
 
     Scaffold(
         topBar = {
@@ -70,7 +71,7 @@ fun FormularioCompraView(navController: NavController, carritoDeCompraViewModel:
                 )
                 if (descuentoAplicado.value > 0.0) {
                     Text(
-                        text = "Descuento aplicado: ${String.format("%.2f", descuentoAplicado.value)}€",
+                        text = "Descuento aplicado: ${String.format("%.2f", descuentoAplicado.value)}€ (${descuentoAplicadoCodigo.value})",
                         style = MaterialTheme.typography.bodyMedium,
                         color = Color.Green,
                         modifier = Modifier.padding(bottom = 8.dp)
@@ -84,14 +85,18 @@ fun FormularioCompraView(navController: NavController, carritoDeCompraViewModel:
                             items = carritoListItems.mapNotNull { it.id },
                             total =  precioConDescuento.coerceAtLeast(0.0),
                             metodoPago = selectedPaymentMethod,
-                            codigoDescuento = codigoDescuento
+                            codigoDescuento = descuentoAplicadoCodigo.value.ifBlank { null }
                         )
                         carritoDeCompraViewModel.borrarCarrito()
+                        Log.d(
+                            "FormularioCompra",
+                            "Llamada a guardarNuevoPedido realizada con método de pago: $selectedPaymentMethod y código: ${descuentoAplicadoCodigo.value}"
+                        )
                         navController.navigate("compraRealizada") {
                             popUpTo("carritoDeCompra") { inclusive = true }
                         }
                     },
-                    enabled = nombre.isNotBlank() && direccion.isNotBlank() && carritoListItems.isNotEmpty(),
+                    enabled = nombre.isNotBlank() && direccion.isNotBlank() && carritoListItems.isNotEmpty() && selectedPaymentMethod.isNotBlank(),
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     Text("Pagar")
@@ -192,25 +197,54 @@ fun FormularioCompraView(navController: NavController, carritoDeCompraViewModel:
 
             Spacer(modifier = Modifier.height(16.dp))
 
-
-            // Campo para el código de descuento
-            OutlinedTextField(
-                value = codigoDescuento,
-                onValueChange = {
-                    codigoDescuento = it
-                    descuentoAplicado.value = when (it) {
-                        "betsaida" -> totalPrecioSeleccionado * 0.3
-                        "megatech" -> 40.0
-                        "proyecto" -> totalPrecioSeleccionado * 0.15
-                        else -> 0.0
-                    }.coerceAtMost(totalPrecioSeleccionado) // Evita descuentos mayores al total
-                },
-                label = { Text("Código de Descuento (opcional)") },
-                modifier = Modifier.fillMaxWidth()
-            )
+            // Fila para el código de descuento y el botón
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                OutlinedTextField(
+                    value = codigoDescuento,
+                    onValueChange = { codigoDescuento = it },
+                    label = { Text("Código Descuento") },
+                    modifier = Modifier.weight(0.7f) // Ocupa el 70% del ancho
+                )
+                Spacer(modifier = Modifier.width(8.dp))
+                Button(
+                    onClick = {
+                        if (descuentoAplicadoCodigo.value != codigoDescuento) {
+                            val descuento = when (codigoDescuento) {
+                                "betsaida" -> totalPrecioSeleccionado * 0.3
+                                "megatech" -> 40.0
+                                "proyecto" -> totalPrecioSeleccionado * 0.15
+                                else -> 0.0
+                            }.coerceAtMost(totalPrecioSeleccionado)
+                            descuentoAplicado.value = descuento
+                            descuentoAplicadoCodigo.value = codigoDescuento
+                        } else {
+                            descuentoAplicado.value = 0.0
+                            descuentoAplicadoCodigo.value = ""
+                            codigoDescuento = "" // Limpiar el TextField al quitar
+                        }
+                    },
+                    modifier = Modifier
+                        .weight(0.3f) // Ocupa el 30% del ancho
+                        .
+                ) {
+                    Text(if (descuentoAplicadoCodigo.value == codigoDescuento && descuentoAplicadoCodigo.value.isNotBlank()) "Quitar" else "Aplicar")
+                }
+            }
+            if (descuentoAplicadoCodigo.value.isNotBlank() && descuentoAplicado.value > 0.0) {
+                Text(
+                    text = "Descuento aplicado: ${String.format("%.2f", descuentoAplicado.value)}€",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = Color.Green,
+                    modifier = Modifier.padding(top = 4.dp).align(Alignment.CenterHorizontally)
+                )
+            }
         }
     }
 }
+
 
 @Composable
 fun FormularioItemRow(item: ItemsModel, onRemoveItem: (ItemsModel) -> Unit) {
