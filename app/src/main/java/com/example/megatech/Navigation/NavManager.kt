@@ -14,7 +14,9 @@ import com.example.megatech.Views.BannerCincuentaView
 import com.example.megatech.Views.BannerTreintaView
 import com.example.megatech.Views.CamaraView
 import com.example.megatech.Views.CarritoDeCompraView
+import com.example.megatech.Views.CompraRealizadaView
 import com.example.megatech.Views.ConsolaView
+import com.example.megatech.Views.FormularioCompraView
 import com.example.megatech.Views.HogarInteligenteView
 import com.example.megatech.Views.ListaDeDeseosView
 import com.example.megatech.Views.MainView
@@ -82,16 +84,32 @@ fun NavManager(sessionManager: SessionManager, listaDeDeseosViewModel: ListaDeDe
             ListaDeDeseosView(navController = navController, listaDeDeseosViewModel = listaDeDeseosViewModel, carritoDeCompraViewModel)
         }
 
-        composable("carritoDeCompra") {
-            CarritoDeCompraView(navController = navController, carritoDeCompraViewModel = carritoDeCompraViewModel, listaDeDeseosViewModel)
-        }
-
         composable("DiscountTreinta") {
             BannerTreintaView(navController = navController)
         }
 
         composable("DiscountCincuenta") {
             BannerCincuentaView(navController = navController)
+        }
+
+        composable("carritoDeCompra") {
+            CarritoDeCompraView(
+                navController = navController,
+                carritoDeCompraViewModel = carritoDeCompraViewModel,
+                listaDeDeseosViewModel = listaDeDeseosViewModel,
+                onComprarClicked = { navController.navigate("formularioCompra") } // Aquí le pasas la lambda
+            )
+        }
+
+        composable("formularioCompra") {
+            FormularioCompraView(
+                navController = navController,
+                carritoDeCompraViewModel = carritoDeCompraViewModel
+            )
+        }
+
+        composable("compraRealizada") {
+            CompraRealizadaView(navController = navController)
         }
 
         composable(

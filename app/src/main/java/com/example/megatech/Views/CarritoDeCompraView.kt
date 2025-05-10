@@ -43,7 +43,8 @@ import com.example.megatech.ViewModels.ListaDeDeseosViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CarritoDeCompraView(navController: NavController, carritoDeCompraViewModel: CarritoDeCompraViewModel, listaDeDeseosViewModel: ListaDeDeseosViewModel){
+fun CarritoDeCompraView(navController: NavController, carritoDeCompraViewModel: CarritoDeCompraViewModel, listaDeDeseosViewModel: ListaDeDeseosViewModel,  onComprarClicked: () -> Unit){
+
     val carritoListItems by carritoDeCompraViewModel.itemCarrito.collectAsState()
     val totalPrecioSeleccionado by carritoDeCompraViewModel.totalPrecioSeleccionado.collectAsState(initial = 0.0)
 
@@ -68,7 +69,7 @@ fun CarritoDeCompraView(navController: NavController, carritoDeCompraViewModel: 
             ) {
                 Text(text = "Total:", style = MaterialTheme.typography.headlineMedium)
                 Text(text = "${String.format("%.2f", totalPrecioSeleccionado)}€", style = MaterialTheme.typography.headlineMedium)
-                Button(onClick = { /* TODO: Implementar lógica de compra */ }) {
+                Button(onClick = { navController.navigate("formularioCompra") }) {
                     Text("Comprar")
                 }
             }
