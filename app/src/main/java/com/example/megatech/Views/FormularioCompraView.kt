@@ -4,6 +4,7 @@ package com.example.megatech.Views
 
 import android.util.Log
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -138,7 +139,9 @@ fun FormularioCompraView(navController: NavController, carritoDeCompraViewModel:
             ExposedDropdownMenuBox(
                 expanded = expanded,
                 onExpandedChange = { expanded = !expanded },
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier
+                    .fillMaxWidth()
+
             ) {
                 OutlinedTextField(
                     value = selectedPaymentMethod,
@@ -146,7 +149,9 @@ fun FormularioCompraView(navController: NavController, carritoDeCompraViewModel:
                     readOnly = true,
                     label = { Text("Método de Pago") },
                     trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
-                    modifier = Modifier.menuAnchor(),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .menuAnchor(),
                     placeholder = {
                         if (selectedPaymentMethod == "Método de Pago") {
                             Text(
