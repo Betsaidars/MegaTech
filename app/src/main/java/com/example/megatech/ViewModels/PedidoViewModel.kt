@@ -34,7 +34,7 @@ class PedidoViewModel(private val context: Context, private val sessionManager: 
         Log.d("PedidoViewModel", "Pedidos cargados: ${_listaPedidos.value}")
     }
 
-    fun guardarNuevoPedido(nombreUsuario: String, direccionEnvio: String, items: List<String>, total: Double,  metodoPago: String) {
+    fun guardarNuevoPedido(nombreUsuario: String, direccionEnvio: String, items: List<String>, total: Double, metodoPago: String, codigoDescuento: String? = null) {
         Log.d("PedidoViewModel", "guardarNuevoPedido llamado con: Nombre=$nombreUsuario, Dirección=$direccionEnvio, Items=$items, Total=$total")
         val nuevoPedido = Pedido(
             id = UUID.randomUUID().toString(),
@@ -43,7 +43,8 @@ class PedidoViewModel(private val context: Context, private val sessionManager: 
             total = total,
             nombreUsuario = nombreUsuario,
             direccionEnvio = direccionEnvio,
-            metodoPago = metodoPago
+            metodoPago = metodoPago,
+            codigoDescuento = codigoDescuento
         )
         // Usa update para actualizar el StateFlow de forma segura y reactiva
         _listaPedidos.update { currentList ->

@@ -8,5 +8,6 @@ data class Pedido(
     val total: Double,
     val nombreUsuario: String,
     val direccionEnvio: String,
-    val metodoPago: String
+    val metodoPago: String,
+    val codigoDescuento: String? = null
 )
