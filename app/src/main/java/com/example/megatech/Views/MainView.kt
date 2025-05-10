@@ -109,6 +109,13 @@ fun MainView(navController: NavController, sessionManager: SessionManager) {
                             navController.navigate("profile")
                         }
                     )
+                    DropdownMenuItem(
+                        text = { Text(stringResource(R.string.menu_my_orders)) }, // Nuevo botón "Mis Pedidos"
+                        onClick = {
+                            expandedMenu = false
+                            navController.navigate("misPedidos") // Navega a la ruta de "misPedidos"
+                        }
+                    )
 
                     DropdownMenuItem(
                         text = { Text((stringResource(R.string.menu_logout))) },

@@ -10,7 +10,7 @@ class SessionManager(context: Context) {
         context.getSharedPreferences("megaTech2_prefs", Context.MODE_PRIVATE)
 
     private val sharedPreferences = context.getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
-
+    private val editor = sharedPreferences.edit()
 
     private val USER_ID_KEY = "USER_ID" // Definir la clave como constante
     private val USER_NAME_KEY = "USER_NAME"
@@ -39,6 +39,11 @@ class SessionManager(context: Context) {
             return null
         }
     }
+
+    fun getUserId(): String {
+        return sharedPreferences.getString(USER_ID_KEY, "") ?: ""
+    }
+
 
     fun clearSession() {
         prefs.edit().clear().apply()

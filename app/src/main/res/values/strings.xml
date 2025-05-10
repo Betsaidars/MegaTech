@@ -5,4 +5,5 @@
     <string name="search_placeholder">Buscar productos</string>
     <string name="wishlist">Lista de deseos</string>
     <string name="greeting">Hola</string>
+    <string name="menu_my_orders" translatable="false">Mis Pedidos</string>
 </resources>

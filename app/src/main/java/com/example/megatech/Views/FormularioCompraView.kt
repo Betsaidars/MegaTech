@@ -2,6 +2,7 @@
 
 package com.example.megatech.Views
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -14,20 +15,27 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
 import com.example.megatech.Model.ItemsModel
+import com.example.megatech.SessionManager
 import com.example.megatech.ViewModels.CarritoDeCompraViewModel
+import com.example.megatech.ViewModels.ListaDeDeseosViewModel
+import com.example.megatech.ViewModels.PedidoViewModel
+import com.example.megatech.ViewModels.PedidoViewModelFactory
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun FormularioCompraView(navController: NavController, carritoDeCompraViewModel: CarritoDeCompraViewModel) {
+fun FormularioCompraView(navController: NavController, carritoDeCompraViewModel: CarritoDeCompraViewModel, sessionManager: SessionManager,  pedidoViewModel: PedidoViewModel) {
     val carritoListItems by carritoDeCompraViewModel.itemCarrito.collectAsState()
     val totalPrecioSeleccionado by carritoDeCompraViewModel.totalPrecioSeleccionado.collectAsState(initial = 0.0)
     var nombre by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
     var direccion by remember { mutableStateOf("") }
+
 
     Scaffold(
         topBar = {
@@ -54,6 +62,13 @@ fun FormularioCompraView(navController: NavController, carritoDeCompraViewModel:
                 )
                 Button(
                     onClick = {
+                        pedidoViewModel.guardarNuevoPedido(
+                            nombreUsuario = nombre,
+                            direccionEnvio = direccion,
+                            items = carritoListItems.mapNotNull { it.id }, // Obtén los IDs de los items
+                            total = totalPrecioSeleccionado
+                        )
+                        Log.d("FormularioCompra", "Llamada a guardarNuevoPedido realizada")
                         navController.navigate("compraRealizada") {
                             popUpTo("carritoDeCompra") { inclusive = true }
                         }
