@@ -12,6 +12,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
@@ -21,8 +22,22 @@ class MainViewModel(private val sessionManager: SessionManager) : ViewModel() {
     private val _banners = MutableStateFlow<List<BannerModel>>(emptyList())
     val banners: StateFlow<List<BannerModel>> = _banners
 
-    private val _items = MutableStateFlow<List<ItemsModel>>(emptyList())
-    val items: StateFlow<List<ItemsModel>> = _items
+    private val _allItems = MutableStateFlow<List<ItemsModel>>(emptyList()) // Cambiamos _items a _allItems para mantener la lista original
+    val allItems: StateFlow<List<ItemsModel>> = _allItems
+
+    private val _searchText = MutableStateFlow("")
+    val searchText: StateFlow<String> = _searchText
+
+    val items: Flow<List<ItemsModel>> = _searchText.combine(_allItems) { text, allItems ->
+        if (text.isBlank()) {
+            allItems // Mostrar todos los items si el texto de búsqueda está vacío
+        } else {
+            allItems.filter {
+                it.name.contains(text, ignoreCase = true) // Filtrar por nombre (puedes añadir más criterios)
+            }
+        }
+    }
+
 
     private val _isLoadingItems = MutableStateFlow(false)
     val isLoadingItems: StateFlow<Boolean> = _isLoadingItems
@@ -60,6 +75,10 @@ class MainViewModel(private val sessionManager: SessionManager) : ViewModel() {
         filterItemsByCategory()
     }
 
+    fun onSearchTextChange(text: String) {
+        _searchText.value = text
+    }
+
     private fun filterItemsByCategory() {
         viewModelScope.launch {
             items.collectLatest { allItems ->
@@ -93,22 +112,27 @@ class MainViewModel(private val sessionManager: SessionManager) : ViewModel() {
     fun getAllItems() {
         viewModelScope.launch {
             try {
+                _isLoadingItems.value = true
                 val response = RetrofitCliente.apiService.getAllItems()
                 if (response.isSuccessful) {
                     val itemList = response.body() ?: emptyList()
-                    _items.value = itemList
+                    _allItems.value = itemList // Actualizamos la lista original
                     Log.d("MainViewModel", "Items cargados: ${itemList.size}")
                 } else {
+                    _errorLoadingItems.value = "Error en la API: ${response.code()}"
                     Log.e("MainViewModel", "Error en la API: ${response.code()}")
                 }
             } catch (e: Exception) {
+                _errorLoadingItems.value = "Error al obtener los items: ${e.message}"
                 Log.e("MainViewModel", "Error al obtener los items: ${e.message}")
+            } finally {
+                _isLoadingItems.value = false
             }
         }
     }
 
     fun getItemById(itemId: String?): Flow<ItemsModel?> {
-        return _items.map { itemsList ->
+        return _allItems.map { itemsList ->
             val foundItem = itemsList.find { it.id == itemId }
             Log.d("GET_ITEM_BY_ID", "Item ID: $itemId, Found Item: ${foundItem?.name}, Colors: ${foundItem?.availableColors}")
             foundItem

@@ -69,13 +69,16 @@ fun MainView(navController: NavController, sessionManager: SessionManager) {
     val mainViewModel: MainViewModel = viewModel(factory = MainViewModelFactory(sessionManager))
 
     val banners by mainViewModel.banners.collectAsState()
-    val items by mainViewModel.items.collectAsState()
-    val pagerState = rememberPagerState(pageCount = { banners.size })
+    val items by mainViewModel.items.collectAsState(initial = emptyList())
+    val pagerState = rememberPagerState(
+        pageCount = { banners.size },
+        initialPage = 0 // Añade un valor inicial para la página (por ejemplo, 0)
+    )
     val isLoadingItems by mainViewModel.isLoadingItems.collectAsState()
     val errorLoadingItems by mainViewModel.errorLoadingItems.collectAsState()
 
     var expandedMenu by remember { mutableStateOf(false) }
-    var searchText by remember { mutableStateOf("") }
+    val searchText by mainViewModel.searchText.collectAsState() // Observamos el estado del texto de búsqueda
 
     LaunchedEffect(Unit) {
         mainViewModel.getAllBanner()
@@ -149,7 +152,7 @@ fun MainView(navController: NavController, sessionManager: SessionManager) {
                 // Buscador
                 TextField(
                     value = searchText,
-                    onValueChange = { searchText = it },
+                    onValueChange = { mainViewModel.onSearchTextChange(it) }, // Llamamos a la función del ViewModel al cambiar el texto
                     leadingIcon = { Icon(Icons.Filled.Search, contentDescription = "Buscar") },
                     placeholder = { Text(stringResource(R.string.search_placeholder)) },
                     modifier = Modifier
