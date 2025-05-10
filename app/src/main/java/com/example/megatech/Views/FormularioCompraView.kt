@@ -8,6 +8,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -23,10 +24,9 @@ import com.example.megatech.ViewModels.CarritoDeCompraViewModel
 @Composable
 fun FormularioCompraView(navController: NavController, carritoDeCompraViewModel: CarritoDeCompraViewModel) {
     val carritoListItems by carritoDeCompraViewModel.itemCarrito.collectAsState()
+    val totalPrecioSeleccionado by carritoDeCompraViewModel.totalPrecioSeleccionado.collectAsState(initial = 0.0)
     var nombre by remember { mutableStateOf("") }
     var direccion by remember { mutableStateOf("") }
-    val totalPrecioSeleccionado by carritoDeCompraViewModel.totalPrecioSeleccionado.collectAsState(initial = 0.0) // Recogemos el total
-
 
     Scaffold(
         topBar = {
@@ -72,14 +72,20 @@ fun FormularioCompraView(navController: NavController, carritoDeCompraViewModel:
                 .padding(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+            Text("Artículos en tu carrito:", style = MaterialTheme.typography.headlineSmall)
             Spacer(modifier = Modifier.height(8.dp))
             LazyColumn {
-                items(carritoListItems) { item ->
-                    FormularioItemRow(item = item) // Usamos una nueva composable para cada item
-                    Divider() // Añade una línea divisoria entre items
+                items(carritoListItems, key = { it.id ?: "" }) { item -> // Añade una key para optimización
+                    FormularioItemRow(
+                        item = item,
+                        onRemoveItem = { itemToRemove ->
+                            carritoDeCompraViewModel.removeItemFromCarritolist(itemToRemove)
+                        }
+                    )
+                    Divider()
                 }
             }
-            Spacer(modifier = Modifier.height(25.dp))
+            Spacer(modifier = Modifier.height(16.dp))
             OutlinedTextField(
                 value = nombre,
                 onValueChange = { nombre = it },
@@ -93,37 +99,36 @@ fun FormularioCompraView(navController: NavController, carritoDeCompraViewModel:
                 label = { Text("Dirección") },
                 modifier = Modifier.fillMaxWidth()
             )
-            Spacer(modifier = Modifier.height(8.dp))
-
         }
     }
 }
 
 @Composable
-fun FormularioItemRow(item: ItemsModel) {
+fun FormularioItemRow(item: ItemsModel, onRemoveItem: (ItemsModel) -> Unit) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 8.dp)
+            .padding(vertical = 8.dp),
+        horizontalArrangement = Arrangement.SpaceBetween // Para alinear el botón al final
     ) {
-        // Imagen del producto
-        item.imageUrl.firstOrNull()?.let { url ->
-            Image(
-                painter = rememberAsyncImagePainter(url),
-                contentDescription = item.name,
-                modifier = Modifier
-                    .size(60.dp)
-                    .padding(end = 8.dp)
-            )
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            item.imageUrl.firstOrNull()?.let { url ->
+                Image(
+                    painter = rememberAsyncImagePainter(url),
+                    contentDescription = item.name,
+                    modifier = Modifier
+                        .size(60.dp)
+                        .padding(end = 8.dp)
+                )
+            }
+            Column {
+                Text(text = item.name ?: "", style = MaterialTheme.typography.bodyMedium)
+                Text(text = "$${item.price ?: ""}", style = MaterialTheme.typography.bodySmall, color = Color.Gray)
+            }
         }
-
-        Column(
-            modifier = Modifier.weight(1f)
-        ) {
-            Text(text = item.name ?: "", style = MaterialTheme.typography.bodyMedium)
-            Text(text = "$${item.price ?: ""}", style = MaterialTheme.typography.bodySmall, color = Color.Gray)
+        IconButton(onClick = { onRemoveItem(item) }) {
+            Icon(Icons.Filled.Delete, contentDescription = "Borrar item")
         }
-        // Aquí podrías añadir la cantidad si la tienes en tu modelo de carrito
     }
 }
