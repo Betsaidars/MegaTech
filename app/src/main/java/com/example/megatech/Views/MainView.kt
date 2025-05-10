@@ -59,6 +59,7 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontFamily
 import com.example.megatech.Data.LanguageSelector
 
 
@@ -267,12 +268,15 @@ fun MainView(navController: NavController, sessionManager: SessionManager) {
             Text(
                 text = "Más vendidos",
                 style = MaterialTheme.typography.headlineSmall.copy(
-                    fontWeight = FontWeight.Bold
+                    fontWeight = FontWeight.Bold,
+                    fontFamily = FontFamily.Monospace
                 ),
                 modifier = Modifier
                     .padding(bottom = 16.dp)
                     .align(Alignment.CenterHorizontally)
             )
+
+            Spacer(modifier = Modifier.height(16.dp))
 
             LazyVerticalGrid(
                 columns = GridCells.Fixed(2),

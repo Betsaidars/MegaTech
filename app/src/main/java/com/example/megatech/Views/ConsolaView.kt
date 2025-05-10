@@ -39,6 +39,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.megatech.Components.ProductoItem
+import com.example.megatech.Data.LanguageSelector
 import com.example.megatech.R
 import com.example.megatech.SessionManager
 import com.example.megatech.ViewModels.MainViewModel
@@ -131,6 +132,7 @@ fun ConsolaView(navController: NavController, sessionManager: SessionManager) {
                 IconButton(onClick = { navController.navigate("listaDeDeseos") }) {
                     Icon(Icons.Filled.FavoriteBorder, contentDescription = "Lista de deseos")
                 }
+                LanguageSelector()
             }
         }
 
@@ -139,11 +141,6 @@ fun ConsolaView(navController: NavController, sessionManager: SessionManager) {
                 .fillMaxSize()
                 .padding(16.dp)
         ) {
-            Text(
-                "Consolas",
-                style = MaterialTheme.typography.headlineMedium,
-                modifier = Modifier.padding(bottom = 16.dp)
-            )
             if (consolas.isEmpty()) {
                 Text("No hay televisores disponibles.")
             } else {

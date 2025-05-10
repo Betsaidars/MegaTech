@@ -6,12 +6,15 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowBack
@@ -65,16 +68,29 @@ fun CarritoDeCompraView(navController: NavController, carritoDeCompraViewModel: 
             )
         },
         bottomBar = {
-            Row(
+            Column(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(16.dp),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
+                horizontalAlignment = Alignment.CenterHorizontally // Centramos el contenido horizontalmente
             ) {
-                Text(text = "Total:", style = MaterialTheme.typography.headlineMedium)
-                Text(text = "${String.format("%.2f", totalPrecioSeleccionado)}€", style = MaterialTheme.typography.headlineMedium)
-                Button(onClick = { navController.navigate("formularioCompra") }) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(text = "Total:", style = MaterialTheme.typography.headlineMedium)
+                    Text(text = "${String.format("%.2f", totalPrecioSeleccionado)}€", style = MaterialTheme.typography.headlineMedium)
+                }
+
+                Spacer(modifier = Modifier.height(8.dp))
+
+                Button(
+                    onClick = { navController.navigate("formularioCompra") },
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    shape = RoundedCornerShape(4.dp)
+                ) {
                     Text("Comprar")
                 }
             }

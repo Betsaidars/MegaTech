@@ -39,6 +39,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.megatech.Components.ProductoItem
+import com.example.megatech.Data.LanguageSelector
 import com.example.megatech.R
 import com.example.megatech.SessionManager
 import com.example.megatech.ViewModels.MainViewModel
@@ -131,6 +132,7 @@ fun HogarInteligenteView(navController: NavController, sessionManager: SessionMa
                 IconButton(onClick = { navController.navigate("listaDeDeseos") }) {
                     Icon(Icons.Filled.FavoriteBorder, contentDescription = "Lista de deseos")
                 }
+                LanguageSelector()
             }
         }
         Column(
@@ -138,11 +140,6 @@ fun HogarInteligenteView(navController: NavController, sessionManager: SessionMa
                 .fillMaxSize()
                 .padding(16.dp)
         ) {
-            Text(
-                "Hogar Inteligente",
-                style = MaterialTheme.typography.headlineMedium,
-                modifier = Modifier.padding(bottom = 16.dp)
-            )
             if (hogarInteligente.isEmpty()) {
                 Text("No hay televisores disponibles.")
             } else {

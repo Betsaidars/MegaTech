@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
@@ -31,6 +32,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.input.KeyboardType
 import com.example.megatech.R
 
 @Composable
@@ -68,14 +70,17 @@ fun RegisterView(navController: NavController, sessionManager: SessionManager) {
         OutlinedTextField(
             value = registerViewModel.email.value,
             onValueChange = { registerViewModel.email.value = it },
-            label = { Text("Email") }
+            label = { Text("Email") },
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email)
         )
         Spacer(modifier = Modifier.height(8.dp))
+
         OutlinedTextField(
             value = registerViewModel.password.value,
             onValueChange = { registerViewModel.password.value = it },
             label = { Text("Contraseña") },
-            visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+                    visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
             trailingIcon = {
                 val imageResource = if (passwordVisible)
                     R.drawable.visibility // Reemplaza con el nombre de tu icono de ojo abierto
