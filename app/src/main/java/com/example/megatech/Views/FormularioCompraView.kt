@@ -26,6 +26,7 @@ fun FormularioCompraView(navController: NavController, carritoDeCompraViewModel:
     val carritoListItems by carritoDeCompraViewModel.itemCarrito.collectAsState()
     val totalPrecioSeleccionado by carritoDeCompraViewModel.totalPrecioSeleccionado.collectAsState(initial = 0.0)
     var nombre by remember { mutableStateOf("") }
+    var email by remember { mutableStateOf("") }
     var direccion by remember { mutableStateOf("") }
 
     Scaffold(
@@ -72,7 +73,6 @@ fun FormularioCompraView(navController: NavController, carritoDeCompraViewModel:
                 .padding(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text("Artículos en tu carrito:", style = MaterialTheme.typography.headlineSmall)
             Spacer(modifier = Modifier.height(8.dp))
             LazyColumn {
                 items(carritoListItems, key = { it.id ?: "" }) { item -> // Añade una key para optimización
@@ -85,14 +85,27 @@ fun FormularioCompraView(navController: NavController, carritoDeCompraViewModel:
                     Divider()
                 }
             }
+
             Spacer(modifier = Modifier.height(16.dp))
+
             OutlinedTextField(
                 value = nombre,
                 onValueChange = { nombre = it },
                 label = { Text("Nombre") },
                 modifier = Modifier.fillMaxWidth()
             )
+
             Spacer(modifier = Modifier.height(8.dp))
+
+            OutlinedTextField(
+                value = email,
+                onValueChange = { email = it },
+                label = { Text("Email") },
+                modifier = Modifier.fillMaxWidth()
+            )
+
+            Spacer(modifier = Modifier.height(8.dp))
+
             OutlinedTextField(
                 value = direccion,
                 onValueChange = { direccion = it },
