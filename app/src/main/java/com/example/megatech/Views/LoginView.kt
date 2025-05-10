@@ -79,7 +79,10 @@ fun LoginView(navController:  NavController, sessionManager: SessionManager) {
                 val description = if (passwordVisible) "Ocultar contraseña" else "Mostrar contraseña"
 
                 IconButton(onClick = { passwordVisible = !passwordVisible }) {
-                    Icon(painter = painterResource(id = imageResource), contentDescription = description)
+                    Icon(
+                        painter = painterResource(id = imageResource),
+                        contentDescription = description
+                    )
                 }
             }
         )
