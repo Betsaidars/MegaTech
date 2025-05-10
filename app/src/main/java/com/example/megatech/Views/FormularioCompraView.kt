@@ -36,6 +36,9 @@ fun FormularioCompraView(navController: NavController, carritoDeCompraViewModel:
     var email by remember { mutableStateOf("") }
     var direccion by remember { mutableStateOf("") }
 
+    val paymentMethods = listOf("Tarjeta de Crédito", "Bizum", "PayPal")
+    var expanded by remember { mutableStateOf(false) }
+    var selectedPaymentMethod by remember { mutableStateOf("Método de Pago") }
 
     Scaffold(
         topBar = {
@@ -65,12 +68,13 @@ fun FormularioCompraView(navController: NavController, carritoDeCompraViewModel:
                         pedidoViewModel.guardarNuevoPedido(
                             nombreUsuario = nombre,
                             direccionEnvio = direccion,
-                            items = carritoListItems.mapNotNull { it.id }, // Obtén los IDs de los items
-                            total = totalPrecioSeleccionado
+                            items = carritoListItems.mapNotNull { it.id },
+                            total = totalPrecioSeleccionado,
+                            metodoPago = selectedPaymentMethod
                         )
-                        Log.d("FormularioCompra", "Llamando a borrarCarrito()")
                         carritoDeCompraViewModel.borrarCarrito()
                         navController.navigate("compraRealizada") {
+                            popUpTo("carritoDeCompra") { inclusive = true }
                         }
                     },
                     enabled = nombre.isNotBlank() && direccion.isNotBlank() && carritoListItems.isNotEmpty(),
@@ -90,7 +94,7 @@ fun FormularioCompraView(navController: NavController, carritoDeCompraViewModel:
         ) {
             Spacer(modifier = Modifier.height(8.dp))
             LazyColumn {
-                items(carritoListItems, key = { it.id ?: "" }) { item -> // Añade una key para optimización
+                items(carritoListItems, key = { it.id ?: "" }) { item ->
                     FormularioItemRow(
                         item = item,
                         onRemoveItem = { itemToRemove ->
@@ -127,9 +131,51 @@ fun FormularioCompraView(navController: NavController, carritoDeCompraViewModel:
                 label = { Text("Dirección") },
                 modifier = Modifier.fillMaxWidth()
             )
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            // Desplegable para el método de pago
+            ExposedDropdownMenuBox(
+                expanded = expanded,
+                onExpandedChange = { expanded = !expanded },
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                OutlinedTextField(
+                    value = selectedPaymentMethod,
+                    onValueChange = {},
+                    readOnly = true,
+                    label = { Text("Método de Pago") },
+                    trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
+                    modifier = Modifier.menuAnchor(),
+                    placeholder = {
+                        if (selectedPaymentMethod == "Método de Pago") {
+                            Text(
+                                text = "Método de Pago",
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                        }
+                    }
+                )
+                ExposedDropdownMenu(
+                    expanded = expanded,
+                    onDismissRequest = { expanded = false }
+                ) {
+                    paymentMethods.forEach { paymentMethod ->
+                        DropdownMenuItem(
+                            text = { Text(text = paymentMethod) },
+                            onClick = {
+                                selectedPaymentMethod = paymentMethod
+                                expanded = false
+                            }
+                        )
+                    }
+                }
+            }
+        }
+
         }
     }
-}
+
 
 @Composable
 fun FormularioItemRow(item: ItemsModel, onRemoveItem: (ItemsModel) -> Unit) {

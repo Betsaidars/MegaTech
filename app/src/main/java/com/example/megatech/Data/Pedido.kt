@@ -7,5 +7,6 @@ data class Pedido(
     val items: List<String>,
     val total: Double,
     val nombreUsuario: String,
-    val direccionEnvio: String
+    val direccionEnvio: String,
+    val metodoPago: String
 )
