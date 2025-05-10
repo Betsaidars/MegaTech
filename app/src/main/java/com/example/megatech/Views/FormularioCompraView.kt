@@ -68,9 +68,9 @@ fun FormularioCompraView(navController: NavController, carritoDeCompraViewModel:
                             items = carritoListItems.mapNotNull { it.id }, // Obtén los IDs de los items
                             total = totalPrecioSeleccionado
                         )
-                        Log.d("FormularioCompra", "Llamada a guardarNuevoPedido realizada")
+                        Log.d("FormularioCompra", "Llamando a borrarCarrito()")
+                        carritoDeCompraViewModel.borrarCarrito()
                         navController.navigate("compraRealizada") {
-                            popUpTo("carritoDeCompra") { inclusive = true }
                         }
                     },
                     enabled = nombre.isNotBlank() && direccion.isNotBlank() && carritoListItems.isNotEmpty(),

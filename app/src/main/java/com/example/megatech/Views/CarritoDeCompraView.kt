@@ -26,6 +26,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -47,6 +48,10 @@ fun CarritoDeCompraView(navController: NavController, carritoDeCompraViewModel: 
 
     val carritoListItems by carritoDeCompraViewModel.itemCarrito.collectAsState()
     val totalPrecioSeleccionado by carritoDeCompraViewModel.totalPrecioSeleccionado.collectAsState(initial = 0.0)
+
+    LaunchedEffect(key1 = carritoListItems.size) {
+        carritoDeCompraViewModel.recargarCarrito()
+    }
 
     Scaffold(
         topBar = {

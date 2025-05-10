@@ -11,12 +11,14 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class CarritoDeCompraViewModel(private val context: Context): ViewModel() {
 
     private val gson = Gson()
     private val sharedPreferences = context.getSharedPreferences("cart_prefs", Context.MODE_PRIVATE)
+
     private val _itemCarrito = MutableStateFlow<List<ItemsModel>>(loadCarritolist())
     val itemCarrito: StateFlow<List<ItemsModel>> = _itemCarrito
 
@@ -61,6 +63,18 @@ class CarritoDeCompraViewModel(private val context: Context): ViewModel() {
         } ?: emptyList()
     }
 
+    fun borrarCarrito() {
+        _itemCarrito.update { emptyList() }
+        // Limpiar también de SharedPreferences
+        sharedPreferences.edit().remove("carritolist").apply()
+        println("Carrito borrado y limpiado de SharedPreferences") // Para depuración
+        Log.d("CarritoViewModel", "Carrito borrado y limpiado de SharedPreferences")
+    }
+
+    fun recargarCarrito() {
+        _itemCarrito.value = loadCarritolist()
+        Log.d("CarritoViewModel", "Carrito recargado desde SharedPreferences con ${_itemCarrito.value.size} items")
+    }
 
 
 
