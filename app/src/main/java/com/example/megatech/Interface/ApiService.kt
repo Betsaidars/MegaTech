@@ -29,6 +29,9 @@ interface ApiService {
     @PUT("api/users/{id}")
     suspend fun updateUser(@Path("id") id: String, @Body updatedUser: UserModel): Response<UserModel>
 
+    @PUT("/api/users/{id}/password")
+    suspend fun changePassword(@Path("id") id: String, @Body passwordUpdate: Map<String, String>): Response<Void>
+
 
     // BANNERS
 

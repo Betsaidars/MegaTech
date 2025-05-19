@@ -45,8 +45,8 @@ fun PerfilView(navController: NavController, sessionManager: SessionManager) {
     val perfilViewModel: PerfilViewModel = viewModel(factory = PerfilViewModelFactory(sessionManager))
 
     val user by perfilViewModel.user.collectAsState()
-    val name = remember(user?.username) { mutableStateOf(user?.username ?: "") }
-    val email = remember(user?.email) { mutableStateOf(user?.email ?: "") }
+    val name = remember { mutableStateOf(user?.username ?: "") }
+    val email = remember { mutableStateOf(user?.email ?: "") }
     var newPassword by remember { mutableStateOf("") }
     var confirmNewPassword by remember { mutableStateOf("") }
     val updateNameEmailResult by perfilViewModel.updateNameEmailResult.collectAsState(initial = null)
@@ -55,6 +55,12 @@ fun PerfilView(navController: NavController, sessionManager: SessionManager) {
 
     LaunchedEffect(Unit) {
         perfilViewModel.fetchUserData()
+    }
+
+    // Observar cambios en 'user' y actualizar los estados de los TextField
+    LaunchedEffect(user) {
+        name.value = user?.username ?: ""
+        email.value = user?.email ?: ""
     }
 
     LaunchedEffect(updateNameEmailResult) {

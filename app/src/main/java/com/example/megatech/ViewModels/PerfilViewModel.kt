@@ -40,16 +40,27 @@ class PerfilViewModel(private val sessionManager: SessionManager) : ViewModel() 
         viewModelScope.launch {
             try {
                 user.value?.id?.let { userId ->
-                    val updatedUser = UserModel(id = userId, username = newName, email = newEmail, password = "") // No enviamos la contraseña
-                    Log.d("PerfilViewModel", "Updating user with ID in body: ${updatedUser.id}, name: $newName, email: $newEmail") // Agrega este log
-                    val response = RetrofitCliente.apiService.updateUser(userId, updatedUser) // <--- AQUÍ ESTÁ LA LLAMADA
+                    val updatedUser =
+                        UserModel(id = userId, username = newName, email = newEmail, password = "")
+                    Log.d(
+                        "PerfilViewModel",
+                        "Updating user with ID in body: ${updatedUser.id}, name: $newName, email: $newEmail"
+                    )
+                    val response = RetrofitCliente.apiService.updateUser(userId, updatedUser)
                     if (response.isSuccessful) {
                         _updateNameEmailResult.value = true
                         val updatedUserInfo = response.body()
-                        updatedUserInfo?.let { sessionManager.saveUserModel(mapApiUserToAppUser(it)) }
+                        updatedUserInfo?.let {
+                            val newUserModel = mapApiUserToAppUser(it)
+                            sessionManager.saveUserModel(newUserModel)
+                            _user.value = newUserModel // Emitir una NUEVA instancia del UserModel
+                        }
                     } else {
                         _updateNameEmailResult.value = false
-                        Log.e("ProfileViewModel", "Error al actualizar el nombre/email: ${response.code()}")
+                        Log.e(
+                            "ProfileViewModel",
+                            "Error al actualizar el nombre/email: ${response.code()}"
+                        )
                     }
                 } ?: run {
                     _updateNameEmailResult.value = false
@@ -57,7 +68,10 @@ class PerfilViewModel(private val sessionManager: SessionManager) : ViewModel() 
                 }
             } catch (e: Exception) {
                 _updateNameEmailResult.value = false
-                Log.e("ProfileViewModel", "Error al llamar a la API para actualizar el nombre/email: ${e.message}")
+                Log.e(
+                    "ProfileViewModel",
+                    "Error al llamar a la API para actualizar el nombre/email: ${e.message}"
+                )
             } finally {
                 _updateNameEmailResult.value = null // Resetear el estado
             }
@@ -68,20 +82,44 @@ class PerfilViewModel(private val sessionManager: SessionManager) : ViewModel() 
         viewModelScope.launch {
             try {
                 user.value?.id?.let { userId ->
-                    // Asumiendo que tienes un endpoint específico para cambiar la contraseña
                     val passwordUpdate = mapOf("newPassword" to newPassword)
-                    _changePasswordResult.value = true
-                    _passwordError.value = null
+                    val response = RetrofitCliente.apiService.changePassword(
+                        userId,
+                        passwordUpdate
+                    ) // <--- ASUME QUE TIENES ESTA FUNCIÓN EN TU ApiService
+
+                    if (response.isSuccessful) {
+                        _changePasswordResult.value = true
+                        _passwordError.value = null
+                        Log.d("PerfilViewModel", "Contraseña cambiada exitosamente")
+                        // Opcional: Podrías limpiar los campos de contraseña en la UI aquí si lo deseas
+                    } else {
+                        _changePasswordResult.value = false
+                        val errorBody = response.errorBody()?.string()
+                            ?: "Error desconocido al cambiar la contraseña"
+                        _passwordError.value = errorBody
+                        Log.e(
+                            "PerfilViewModel",
+                            "Error al cambiar la contraseña: ${response.code()} - $errorBody"
+                        )
+                    }
 
                 } ?: run {
                     _changePasswordResult.value = false
                     _passwordError.value = "ID de usuario no encontrado"
-                    Log.e("ProfileViewModel", "ID de usuario no encontrado para cambiar la contraseña")
+                    Log.e(
+                        "PerfilViewModel",
+                        "ID de usuario no encontrado para cambiar la contraseña"
+                    )
                 }
             } catch (e: Exception) {
                 _changePasswordResult.value = false
-                _passwordError.value = "Error al llamar a la API para cambiar la contraseña: ${e.message}"
-                Log.e("ProfileViewModel", "Error al llamar a la API para cambiar la contraseña: ${e.message}")
+                _passwordError.value =
+                    "Error al llamar a la API para cambiar la contraseña: ${e.message}"
+                Log.e(
+                    "PerfilViewModel",
+                    "Error al llamar a la API para cambiar la contraseña: ${e.message}"
+                )
             } finally {
                 _changePasswordResult.value = null // Resetear el estado
             }
