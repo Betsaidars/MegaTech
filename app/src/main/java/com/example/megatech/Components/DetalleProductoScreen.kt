@@ -42,7 +42,7 @@ import com.example.megatech.ViewModels.ListaDeDeseosViewModel
 import com.example.megatech.ViewModels.ListaDeDeseosViewModelFactory
 import com.example.megatech.ViewModels.MainViewModel
 import com.example.megatech.ViewModels.MainViewModelFactory
-import com.example.megatech.ui.theme.Pink80
+import androidx.compose.material.icons.filled.Favorite
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -66,11 +66,14 @@ fun DetalleProductoScreen(itemId: String?, sessionManager: SessionManager, navCo
     val listaDeDeseos by listaDeDeseosViewModel.wishlistItems.collectAsState()
     val carritoDeCompra by carritoDeCompraViewModel.itemCarrito.collectAsState()
 
-    var isFavoriteBottom by remember(producto, listaDeDeseos) {
-        mutableStateOf(producto?.id?.let { itemId ->
-            listaDeDeseos.any { it.id == itemId }
-        } ?: false)
-    }
+    var isFavoriteBottom = remember(producto, listaDeDeseos) {
+        derivedStateOf {
+            producto?.id?.let { id -> listaDeDeseos.any { it.id == id } } ?: false
+        }
+    }.value
+
+
+
 
     var isCarritoBottom by remember(producto, carritoDeCompra) {
         mutableStateOf(producto?.id?.let { itemId ->
@@ -214,7 +217,7 @@ fun DetalleProductoScreen(itemId: String?, sessionManager: SessionManager, navCo
                 modifier = Modifier.padding(start = 8.dp)
             ) {
                 Icon(
-                    Icons.Filled.FavoriteBorder,
+                    imageVector = if (isFavoriteBottom) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder,
                     contentDescription = if (isFavoriteBottom) "Eliminar de deseados" else "Añadir a deseados",
                     modifier = Modifier.size(24.dp),
                     tint = if (isFavoriteBottom) Color.Black else MaterialTheme.colorScheme.onBackground
