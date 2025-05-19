@@ -23,13 +23,15 @@ import com.example.megatech2.Views.RegisterView
 fun TabsView(navController: NavController, sessionManager: SessionManager){
     var selectedTab by remember { mutableStateOf(0) }
     val tabs = listOf("Iniciar Sesión", "Registrarse")
+    val indicatorColor = Color(0xFFFFA7B1)
 
     Column {
         TabRow(selectedTabIndex = selectedTab,
             contentColor = Color.Black,
             indicator = { tabPositions ->
                 TabRowDefaults.Indicator(
-                    Modifier.tabIndicatorOffset(tabPositions[selectedTab])
+                    Modifier.tabIndicatorOffset(tabPositions[selectedTab]),
+                    color = indicatorColor
                 )
             }
         ) {

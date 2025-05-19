@@ -1,12 +1,14 @@
 package com.example.megatech2.Views
 
 import android.widget.Toast
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
@@ -14,7 +16,9 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -53,18 +57,35 @@ fun LoginView(navController: NavController, sessionManager: SessionManager) {
 
     var passwordVisible by remember { mutableStateOf(false) }
 
+    val outlinedTextFieldColors = OutlinedTextFieldDefaults.colors(
+        focusedBorderColor = Color(0xFFFFA7B1), // Cambia este color al que desees
+        unfocusedBorderColor = MaterialTheme.colorScheme.outline, // Color del borde cuando no está enfocado
+        cursorColor = Color(0xFFFFA7B1),
+        focusedLabelColor = Color(0xFFFFA7B1)
+    )
+
 
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(16.dp),
-        verticalArrangement = Arrangement.Center,
+        verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+
+        Image(
+            painter = painterResource(id = R.drawable.logo_principla),
+            contentDescription = "Logo de MegaTech",
+            modifier = Modifier
+                .size(300.dp)
+                .padding(bottom = 24.dp)
+        )
+
         OutlinedTextField(
             value = username,
             onValueChange = { username = it },
-            label = { Text("Usuario") }
+            label = { Text("Usuario") },
+            colors = outlinedTextFieldColors
         )
 
         Spacer(modifier = Modifier.height(8.dp))
@@ -74,6 +95,7 @@ fun LoginView(navController: NavController, sessionManager: SessionManager) {
             onValueChange = { password = it },
             label = { Text("Contraseña") },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+            colors = outlinedTextFieldColors,
             visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
             trailingIcon = {
                 val imageResource = if (passwordVisible)
