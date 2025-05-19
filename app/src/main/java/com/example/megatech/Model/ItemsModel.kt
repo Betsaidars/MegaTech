@@ -13,6 +13,7 @@ data class ItemsModel(
     @SerializedName("availableColors") val availableColors: List<String?>?,
     @SerializedName("imageUrl") val imageUrl: List<String>,
     @SerializedName("price") val price: Double,
-    @SerializedName("rating") val rating: Double
+    @SerializedName("rating") val rating: Double,
+    @SerializedName("cantidad") val cantidad: Int = 1
 
 )

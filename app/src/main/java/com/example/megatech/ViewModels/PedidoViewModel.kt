@@ -21,7 +21,7 @@ class PedidoViewModel(private val context: Context, private val sessionManager: 
     private val _listaPedidos = MutableStateFlow<List<Pedido>>(emptyList())
     val listaPedidos: StateFlow<List<Pedido>> = _listaPedidos
 
-    private val _listaDePedidosGuardados = MutableStateFlow<MutableList<Pedido>>(mutableListOf()) // Lista mutable temporal
+    private val _listaDePedidosGuardados = MutableStateFlow<MutableList<Pedido>>(mutableListOf())
 
 
     init {

@@ -127,12 +127,13 @@ fun CarritoDeCompraView(navController: NavController, carritoDeCompraViewModel: 
                             item = item,
                             onRemoveFromCart = { carritoDeCompraViewModel.removeItemFromCarritolist(it) },
                             onAddToWishlist = { listaDeDeseosViewModel.addItemToWishlist(it) },
-                            // onQuantityIncremented = { /* TODO: Implementar */ },
-                            // onQuantityDecremented = { /* TODO: Implementar */ },
+                            onQuantityIncremented = { carritoDeCompraViewModel.incrementarCantidad(it) },
+                            onQuantityDecremented = { carritoDeCompraViewModel.decrementarCantidad(it) },
                             navController = navController,
-                            snackbarHostState,
-                            coroutineScope
+                            snackbarHostState = snackbarHostState,
+                            coroutineScope = coroutineScope
                         )
+
                     }
                 }
             }
@@ -145,6 +146,8 @@ fun CartItemRow(
     item: ItemsModel,
     onRemoveFromCart: (ItemsModel) -> Unit,
     onAddToWishlist: (ItemsModel) -> Unit,
+    onQuantityIncremented: (ItemsModel) -> Unit,
+    onQuantityDecremented: (ItemsModel) -> Unit,
     navController: NavController,
     snackbarHostState: SnackbarHostState,
     coroutineScope: CoroutineScope
@@ -194,11 +197,11 @@ fun CartItemRow(
 
             // Implementación básica de los botones de cantidad (puedes personalizar más)
             Row(verticalAlignment = Alignment.CenterVertically) {
-                IconButton(onClick = { /* TODO: Implementar decremento de cantidad */ }) {
+                IconButton(onClick = { onQuantityDecremented(item) }) {
                     Icon(painterResource(id = R.drawable.remove), contentDescription = "Quitar uno")
                 }
-                Text(text = "1") // Reemplaza con la cantidad real del item en el carrito
-                IconButton(onClick = { /* TODO: Implementar incremento de cantidad */ }) {
+                Text(text = "${item.cantidad}") // ← muestra la cantidad real
+                IconButton(onClick = { onQuantityIncremented(item) }) {
                     Icon(Icons.Filled.Add, contentDescription = "Añadir uno")
                 }
             }

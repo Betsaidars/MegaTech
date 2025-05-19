@@ -22,23 +22,30 @@ class CarritoDeCompraViewModel(private val context: Context): ViewModel() {
     private val _itemCarrito = MutableStateFlow<List<ItemsModel>>(loadCarritolist())
     val itemCarrito: StateFlow<List<ItemsModel>> = _itemCarrito
 
-    val totalPrecioSeleccionado = _itemCarrito.map { items ->
-        items.sumOf { it.price ?: 0.0 }
-    }
+    private val _totalPrecioSeleccionado = MutableStateFlow(0.0)
+    val totalPrecioSeleccionado: StateFlow<Double> = _totalPrecioSeleccionado
+
 
     init {
         Log.d("CarritoCompraInit", "Lista cargada al inicio con ${_itemCarrito.value.size} items")
+        actualizarTotal()  // <-- Agregado para actualizar el total en inicio
         viewModelScope.launch {
             itemCarrito.collectLatest { saveCarritolist(it) }
         }
     }
 
+
     fun addItemToCarritolist(item: ItemsModel) {
-        if (!_itemCarrito.value.none { it.id == item.id }) return
-        val updatedList = _itemCarrito.value + item
-        _itemCarrito.value = updatedList // Esto emite el nuevo estado
-        Log.d("CarritolistFlow", "Emitiendo nueva lista al agregar: ${updatedList.size} items")
+        // Crear una copia del item con cantidad 1 si es cero o menor
+        val itemConCantidad = if (item.cantidad <= 0) item.copy(cantidad = 1) else item
+
+        if (!_itemCarrito.value.none { it.id == itemConCantidad.id }) return
+        val updatedList = _itemCarrito.value + itemConCantidad
+        _itemCarrito.value = updatedList
+        actualizarTotal()
     }
+
+
 
     fun removeItemFromCarritolist(item: ItemsModel) {
         val updatedList = _itemCarrito.value.filter { it.id != item.id }
@@ -73,8 +80,33 @@ class CarritoDeCompraViewModel(private val context: Context): ViewModel() {
 
     fun recargarCarrito() {
         _itemCarrito.value = loadCarritolist()
+        actualizarTotal()  // <-- Agregado para actualizar total al recargar
         Log.d("CarritoViewModel", "Carrito recargado desde SharedPreferences con ${_itemCarrito.value.size} items")
     }
+
+    fun incrementarCantidad(item: ItemsModel) {
+        val updatedList = _itemCarrito.value.map {
+            if (it.id == item.id) it.copy(cantidad = (it.cantidad ?: 1) + 1) else it
+        }
+        _itemCarrito.value = updatedList
+        actualizarTotal()
+    }
+
+    fun decrementarCantidad(item: ItemsModel) {
+        val updatedList = _itemCarrito.value.map {
+            if (it.id == item.id && (it.cantidad ?: 1) > 1)
+                it.copy(cantidad = (it.cantidad ?: 1) - 1)
+            else it
+        }
+        _itemCarrito.value = updatedList
+        actualizarTotal()
+    }
+
+    fun actualizarTotal() {
+        _totalPrecioSeleccionado.value = _itemCarrito.value.sumOf { it.price * (it.cantidad ?: 1) }
+    }
+
+
 
 
 
