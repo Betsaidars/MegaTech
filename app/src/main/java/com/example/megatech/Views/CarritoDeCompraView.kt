@@ -27,11 +27,14 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -44,6 +47,8 @@ import com.example.megatech.Model.ItemsModel
 import com.example.megatech.R
 import com.example.megatech.ViewModels.CarritoDeCompraViewModel
 import com.example.megatech.ViewModels.ListaDeDeseosViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -51,6 +56,10 @@ fun CarritoDeCompraView(navController: NavController, carritoDeCompraViewModel: 
 
     val carritoListItems by carritoDeCompraViewModel.itemCarrito.collectAsState()
     val totalPrecioSeleccionado by carritoDeCompraViewModel.totalPrecioSeleccionado.collectAsState(initial = 0.0)
+
+    val snackbarHostState = remember { androidx.compose.material3.SnackbarHostState() }
+    val coroutineScope = rememberCoroutineScope()
+
 
     LaunchedEffect(key1 = carritoListItems.size) {
         carritoDeCompraViewModel.recargarCarrito()
@@ -94,7 +103,8 @@ fun CarritoDeCompraView(navController: NavController, carritoDeCompraViewModel: 
                     Text("Comprar")
                 }
             }
-        }
+        },
+        snackbarHost = { androidx.compose.material3.SnackbarHost(hostState = snackbarHostState) }
     ) { paddingValues ->
         Column(
             modifier = Modifier
@@ -119,7 +129,9 @@ fun CarritoDeCompraView(navController: NavController, carritoDeCompraViewModel: 
                             onAddToWishlist = { listaDeDeseosViewModel.addItemToWishlist(it) },
                             // onQuantityIncremented = { /* TODO: Implementar */ },
                             // onQuantityDecremented = { /* TODO: Implementar */ },
-                            navController = navController
+                            navController = navController,
+                            snackbarHostState,
+                            coroutineScope
                         )
                     }
                 }
@@ -133,9 +145,9 @@ fun CartItemRow(
     item: ItemsModel,
     onRemoveFromCart: (ItemsModel) -> Unit,
     onAddToWishlist: (ItemsModel) -> Unit,
-    // onQuantityIncremented: (ItemsModel) -> Unit,
-    // onQuantityDecremented: (ItemsModel) -> Unit,
-    navController: NavController
+    navController: NavController,
+    snackbarHostState: SnackbarHostState,
+    coroutineScope: CoroutineScope
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
@@ -171,9 +183,15 @@ fun CartItemRow(
             IconButton(onClick = { onRemoveFromCart(item) }) {
                 Icon(Icons.Filled.Delete, contentDescription = "Eliminar del carrito")
             }
-            IconButton(onClick = { onAddToWishlist(item) }) {
+            IconButton(onClick = {
+                onAddToWishlist(item)
+                coroutineScope.launch {
+                    snackbarHostState.showSnackbar("Se añadió a la lista de deseos")
+                }
+            }) {
                 Icon(Icons.Filled.FavoriteBorder, contentDescription = "Añadir a lista de deseos")
             }
+
             // Implementación básica de los botones de cantidad (puedes personalizar más)
             Row(verticalAlignment = Alignment.CenterVertically) {
                 IconButton(onClick = { /* TODO: Implementar decremento de cantidad */ }) {
