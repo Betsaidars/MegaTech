@@ -145,7 +145,7 @@ fun MainView(navController: NavController, sessionManager: SessionManager) {
                     Image(
                         painter = painterResource(id = R.drawable.logo),
                         contentDescription = "Logo de la empresa",
-                        modifier = Modifier.size(30.dp),
+                        modifier = Modifier.size(50.dp),
                         contentScale = ContentScale.Fit
                     )
                 }
