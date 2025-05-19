@@ -9,6 +9,8 @@ import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.PUT
+import retrofit2.http.Path
 
 
 interface ApiService {
@@ -23,6 +25,9 @@ interface ApiService {
 
     @POST("api/users/register")
     suspend fun registerUser(@Body userModel: UserModel): Response<Map<String, Any>>
+
+    @PUT("api/users/{id}")
+    suspend fun updateUser(@Path("id") id: String, @Body updatedUser: UserModel): Response<UserModel>
 
 
     // BANNERS

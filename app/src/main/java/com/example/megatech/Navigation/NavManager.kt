@@ -31,6 +31,7 @@ import com.example.megatech.Views.ListaDeDeseosView
 import com.example.megatech.Views.MainView
 import com.example.megatech.Views.MisPedidosView
 import com.example.megatech.Views.OrdenadoresView
+import com.example.megatech.Views.PerfilView
 import com.example.megatech.Views.PhoneView
 import com.example.megatech.Views.RelojesView
 import com.example.megatech.Views.SonidoView
@@ -108,6 +109,10 @@ fun NavManager(sessionManager: SessionManager, listaDeDeseosViewModel: ListaDeDe
 
         composable("DiscountCincuenta") {
             BannerCincuentaView(navController = navController)
+        }
+
+        composable("perfil"){
+            PerfilView(navController, sessionManager)
         }
 
         composable("carritoDeCompra") {

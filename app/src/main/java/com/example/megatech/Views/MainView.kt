@@ -110,7 +110,7 @@ fun MainView(navController: NavController, sessionManager: SessionManager) {
                         text = { Text(stringResource(R.string.menu_profile)) },
                         onClick = {
                             expandedMenu = false
-                            navController.navigate("profile")
+                            navController.navigate("perfil")
                         }
                     )
                     DropdownMenuItem(

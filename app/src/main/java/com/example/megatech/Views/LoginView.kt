@@ -16,6 +16,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -40,12 +41,14 @@ import com.example.megatech.ViewModels.LoginViewModelFactory
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun LoginView(navController:  NavController, sessionManager: SessionManager) {
+fun LoginView(navController: NavController, sessionManager: SessionManager) {
     val loginViewModel: LoginViewModel = viewModel(factory = LoginViewModelFactory(sessionManager))
 
     var username by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     val context = LocalContext.current
+    val loginResult by loginViewModel.loginResult.collectAsState()
+    val loginError by loginViewModel.loginError.collectAsState()
 
     var passwordVisible by remember { mutableStateOf(false) }
 
@@ -89,22 +92,32 @@ fun LoginView(navController:  NavController, sessionManager: SessionManager) {
         Spacer(modifier = Modifier.height(16.dp))
         Button(onClick = {
             val user = UserModel("", username, "", password)
-            loginViewModel.loginUser(user, { loggedInUser ->
-                // Inicio de sesión exitoso y datos del usuario obtenidos
-                Toast.makeText(context, "Inicio de sesión exitoso", Toast.LENGTH_SHORT).show()
-                navController.navigate("Main") // Navega a la pantalla principal
-            }, { errorMessage ->
-                // Error de inicio de sesión
-                Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show()
-            })
+            loginViewModel.loginUser(
+                user = user,
+                onSuccess = {
+                    Toast.makeText(context, "Inicio de sesión exitoso", Toast.LENGTH_SHORT).show()
+                    navController.navigate("Main") // Navega a la pantalla principal
+                },
+                onFailure = { errorMessage ->
+                    Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show()
+                }
+            )
         },
             colors = ButtonDefaults.buttonColors(
                 containerColor = Color(0xFFFFA7B1)
             )
         ) {
-            Text("Iniciar sesión",
+            Text(
+                "Iniciar sesión",
             )
         }
 
+        loginResult?.let { message ->
+            Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+        }
+
+        loginError?.let { error ->
+            Toast.makeText(context, error, Toast.LENGTH_LONG).show()
+        }
     }
 }
