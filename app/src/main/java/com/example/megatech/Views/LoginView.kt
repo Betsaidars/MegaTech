@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -65,6 +66,7 @@ fun LoginView(navController: NavController, sessionManager: SessionManager) {
             onValueChange = { username = it },
             label = { Text("Usuario") }
         )
+
         Spacer(modifier = Modifier.height(8.dp))
 
         OutlinedTextField(
@@ -105,7 +107,8 @@ fun LoginView(navController: NavController, sessionManager: SessionManager) {
         },
             colors = ButtonDefaults.buttonColors(
                 containerColor = Color(0xFFFFA7B1)
-            )
+            ),
+            shape = RoundedCornerShape(4.dp)
         ) {
             Text(
                 "Iniciar sesión",

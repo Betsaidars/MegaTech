@@ -36,7 +36,7 @@ fun TabsView(navController: NavController, sessionManager: SessionManager){
             tabs.forEachIndexed { index, title ->
                 Tab(selected = selectedTab == index,
                     onClick = { selectedTab = index },
-                    text = { Text(text = title) }
+                    text = { Text(text = title) },
                 )
             }
         }

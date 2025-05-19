@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.FavoriteBorder
@@ -186,10 +187,11 @@ fun DetalleProductoScreen(itemId: String?, sessionManager: SessionManager, navCo
                         Log.d("DetalleProducto", "Añadido al carrito: ${it.id}")
                     }
                 },
+                shape = RoundedCornerShape(4.dp),
                 modifier = Modifier
                     .weight(1f)
                     .padding(end = 8.dp),
-                colors = ButtonDefaults.buttonColors(containerColor = rosa)
+                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFFFA7B1))
             ) {
                 Icon(
                     Icons.Filled.ShoppingCart,

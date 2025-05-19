@@ -2,6 +2,7 @@ package com.example.megatech.Views
 
 import android.util.Log
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -47,6 +48,13 @@ fun FormularioCompraView(
     val descuentoAplicado = remember { mutableStateOf(0.0) }
     val descuentoAplicadoCodigo = remember { mutableStateOf("") }
     val mainScrollState = rememberScrollState() // Estado para el scroll principal
+
+    val outlinedTextFieldColors = OutlinedTextFieldDefaults.colors(
+        focusedBorderColor = Color(0xFFFFA7B1), // Cambia este color al que desees
+        unfocusedBorderColor = MaterialTheme.colorScheme.outline, // Color del borde cuando no está enfocado
+        cursorColor = Color(0xFFFFA7B1),
+        focusedLabelColor = Color(0xFFFFA7B1)
+    )
 
     Scaffold(
         topBar = {
@@ -101,7 +109,8 @@ fun FormularioCompraView(
                     },
                     enabled = nombre.isNotBlank() && direccion.isNotBlank() && carritoListItems.isNotEmpty() && selectedPaymentMethod.isNotBlank(),
                     modifier = Modifier.fillMaxWidth(),
-                    shape = RoundedCornerShape(4.dp)
+                    shape = RoundedCornerShape(4.dp),
+
 
                 ) {
                     Text("Pagar")
@@ -138,7 +147,8 @@ fun FormularioCompraView(
                 value = nombre,
                 onValueChange = { nombre = it },
                 label = { Text("Nombre") },
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
+                colors = outlinedTextFieldColors
             )
 
             Spacer(modifier = Modifier.height(8.dp))
@@ -148,7 +158,8 @@ fun FormularioCompraView(
                 onValueChange = { email = it },
                 label = { Text("Email") },
                 modifier = Modifier.fillMaxWidth(),
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email)
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
+                colors = outlinedTextFieldColors
             )
 
             Spacer(modifier = Modifier.height(8.dp))
@@ -157,7 +168,8 @@ fun FormularioCompraView(
                 value = direccion,
                 onValueChange = { direccion = it },
                 label = { Text("Dirección") },
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
+                colors = outlinedTextFieldColors
             )
 
             Spacer(modifier = Modifier.height(16.dp))
@@ -177,6 +189,7 @@ fun FormularioCompraView(
                     modifier = Modifier
                         .fillMaxWidth()
                         .menuAnchor(),
+                    colors = outlinedTextFieldColors,
                     placeholder = {
                         if (selectedPaymentMethod == "Método de Pago") {
                             Text(
@@ -213,7 +226,8 @@ fun FormularioCompraView(
                     value = codigoDescuento,
                     onValueChange = { codigoDescuento = it },
                     label = { Text("Código Descuento") },
-                    modifier = Modifier.weight(0.7f)
+                    modifier = Modifier.weight(0.7f),
+                    colors = outlinedTextFieldColors
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Button(
@@ -234,7 +248,8 @@ fun FormularioCompraView(
                         }
                     },
                     modifier = Modifier.weight(0.3f),
-                    shape = RoundedCornerShape(4.dp)
+                    shape = RoundedCornerShape(4.dp),
+                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFFFA7B1))
 
                 ) {
                     Text(if (descuentoAplicadoCodigo.value == codigoDescuento && descuentoAplicadoCodigo.value.isNotBlank()) "Quitar" else "Aplicar")
