@@ -8,6 +8,6 @@ class ItemsWithDiscountModel (
     @SerializedName("imageUrl") val imageUrlDiscoint: String,
     @SerializedName("name") val nameDiscoint: String,
     @SerializedName("normalPrice") val normalPriceDiscoint: Double,
-    @SerializedName("ItemsWithDiscoint") val priceWithDiscoint: Double,
+    @SerializedName("priceWithDiscoint") val priceWithDiscoint: Double,
 
 )
