@@ -122,7 +122,7 @@ fun CarritoDeCompraView(navController: NavController, carritoDeCompraViewModel: 
                     contentPadding = PaddingValues(vertical = 4.dp)
                 ) {
                     items(carritoListItems) { item ->
-                        Log.d("CarritoDeCompra", "Item en la lista: ${item.name}, ID: ${item.id}")
+                        Log.d("CarritoDeCompra", "Item en la lista: ${item.name}, ID: ${item.id}, Color: ${item.selectedColor}")
                         CartItemRow(
                             item = item,
                             onRemoveFromCart = { carritoDeCompraViewModel.removeItemFromCarritolist(it) },
@@ -158,13 +158,26 @@ fun CartItemRow(
             .fillMaxWidth()
             .padding(horizontal = 8.dp, vertical = 4.dp) // Reducido el padding del item
     ) {
-        // Imagen del producto (ocupa un espacio más pequeño)
-        item.imageUrl.firstOrNull()?.let { url ->
+        // Imagen del producto
+        val displayedImageUrl = remember(item.selectedColor, item.imageUrl, item.availableColors) {
+            if (item.selectedColor != null && item.availableColors != null && item.imageUrl.isNotEmpty()) {
+                val colorIndex = item.availableColors.indexOf(item.selectedColor)
+                if (colorIndex != -1 && colorIndex < item.imageUrl.size) {
+                    item.imageUrl[colorIndex]
+                } else {
+                    item.imageUrl.firstOrNull()
+                }
+            } else {
+                item.imageUrl.firstOrNull()
+            }
+        }
+
+        displayedImageUrl?.let { url ->
             Image(
                 painter = rememberAsyncImagePainter(url),
                 contentDescription = item.name,
                 modifier = Modifier
-                    .size(80.dp) // Tamaño más pequeño para la imagen
+                    .size(80.dp)
                     .padding(end = 8.dp)
             )
         }
@@ -175,7 +188,11 @@ fun CartItemRow(
         ) {
             Text(text = item.name ?: "", style = MaterialTheme.typography.bodyMedium)
             Text(text = "$${item.price ?: ""}", style = MaterialTheme.typography.bodySmall, color = Color.Gray)
-            // Aquí podrías mostrar la cantidad si la implementas en tu modelo de carrito
+            // ¡ESTA ES LA LÍNEA CRÍTICA QUE DEBES AÑADIR A TU UI!
+            item.selectedColor?.let { color -> // Solo muestra el texto si el color no es nulo
+                Text(text = "Color: $color", style = MaterialTheme.typography.bodySmall, color = Color.DarkGray)
+            }
+            Text(text = "Cantidad: ${item.cantidad ?: 1}", style = MaterialTheme.typography.bodySmall, color = Color.DarkGray)
         }
 
         // Botones

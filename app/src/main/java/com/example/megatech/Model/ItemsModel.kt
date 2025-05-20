@@ -14,6 +14,7 @@ data class ItemsModel(
     @SerializedName("imageUrl") val imageUrl: List<String>,
     @SerializedName("price") val price: Double,
     @SerializedName("rating") val rating: Double,
-    @SerializedName("cantidad") val cantidad: Int = 1
+    @SerializedName("cantidad") val cantidad: Int = 1,
+    var selectedColor: String? = null
 
 )

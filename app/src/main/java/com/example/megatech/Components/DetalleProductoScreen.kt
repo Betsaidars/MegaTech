@@ -54,6 +54,9 @@ fun DetalleProductoScreen(itemId: String?, sessionManager: SessionManager, navCo
     val rosa = Color(0xFFEC407A)
 
     var selectedColorIndex by remember { mutableStateOf<Int?>(null) }
+
+    var selectedColorName by remember { mutableStateOf<String?>(null) }
+
     val displayedImageUrl by remember(producto, selectedColorIndex) {
         derivedStateOf {
             if (selectedColorIndex != null && producto?.imageUrl?.isNotEmpty() == true) {
@@ -143,8 +146,9 @@ fun DetalleProductoScreen(itemId: String?, sessionManager: SessionManager, navCo
                                 ColorCircle(
                                     color = colorName,
                                     isSelected = index == selectedColorIndex,
-                                    onColorSelected = {
+                                    onColorSelected = { selected  ->
                                         selectedColorIndex = index
+                                        selectedColorName = selected
                                         Log.d("COLOR_SELECTED", "Color: $colorName, Index: $index")
                                     }
                                 )
@@ -182,9 +186,13 @@ fun DetalleProductoScreen(itemId: String?, sessionManager: SessionManager, navCo
             Button(
                 onClick = {
                     producto?.let {
-                        carritoDeCompraViewModel.addItemToCarritolist(it)
+                        Log.d("DEBUG_COLOR", "Intentando añadir al carrito. Color seleccionado: $selectedColorName")
+                        val productoParaCarrito = it.copy(
+                            selectedColor = selectedColorName
+                        )
+                        carritoDeCompraViewModel.addItemToCarritolist(productoParaCarrito)
                         isCarritoBottom = true // Actualizar el estado visual del carrito
-                        Log.d("DetalleProducto", "Añadido al carrito: ${it.id}")
+                        Log.d("DetalleProducto", "Añadido al carrito: ${productoParaCarrito.id} con color: ${productoParaCarrito.selectedColor}")
                     }
                 },
                 shape = RoundedCornerShape(4.dp),
@@ -206,12 +214,14 @@ fun DetalleProductoScreen(itemId: String?, sessionManager: SessionManager, navCo
             IconButton(
                 onClick = {
                     producto?.let {
+                        val productoParaDeseos = it.copy(
+                            selectedColor = selectedColorName // Usa el color seleccionado aquí
+                        )
                         isFavoriteBottom = !isFavoriteBottom
                         if (isFavoriteBottom) {
-                            listaDeDeseosViewModel.addItemToWishlist(it)
-                            Log.d("DetalleProducto", "Añadido a la lista de deseos: ${it.id}")
-                        } else {
-                            listaDeDeseosViewModel.removeItemFromWishlist(it)
+                            listaDeDeseosViewModel.addItemToWishlist(productoParaDeseos)
+                            Log.d("DetalleProducto", "Añadido a la lista de deseos: ${productoParaDeseos.id} con color: ${productoParaDeseos.selectedColor}")                        } else {
+                            listaDeDeseosViewModel.removeItemFromWishlist(productoParaDeseos)
                             Log.d("DetalleProducto", "Eliminado de la lista de deseos: ${it.id}")
                         }
                     }
