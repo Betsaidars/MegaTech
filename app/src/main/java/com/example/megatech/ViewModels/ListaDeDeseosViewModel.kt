@@ -32,20 +32,35 @@ class ListaDeDeseosViewModel(private val context: Context) : ViewModel() {
     }
 
     fun addItemToWishlist(item: ItemsModel) {
-        if (!_wishlistItems.value.none { it.id == item.id }) return
-        val updatedList = _wishlistItems.value + item
-        _wishlistItems.value = updatedList // Esto emite el nuevo estado
-        Log.d("WishlistFlow", "Emitiendo nueva lista al agregar: ${updatedList.size} items")
+        // Asegúrate de que el item tenga una cantidad inicial si es necesario, aunque para deseos no suele ser crítico
+        val itemToAdd = item.copy(cantidad = item.cantidad.takeIf { it > 0 } ?: 1)
+
+        // Buscar si ya existe un item con el MISMO ID y el MISMO selectedColor
+        val alreadyExists = _wishlistItems.value.any {
+            it.id == itemToAdd.id && it.selectedColor == itemToAdd.selectedColor
+        }
+
+        if (!alreadyExists) { // Solo añade si no existe una combinación id+color
+            val updatedList = _wishlistItems.value + itemToAdd
+            _wishlistItems.value = updatedList
+            Log.d("WishlistViewModel", "Item añadido a la lista de deseos: ${itemToAdd.name}, Color: ${itemToAdd.selectedColor}")
+        } else {
+            Log.d("WishlistViewModel", "Item ya existe en la lista de deseos: ${itemToAdd.name}, Color: ${itemToAdd.selectedColor}")
+        }
     }
 
     fun removeItemFromWishlist(item: ItemsModel) {
-        val updatedList = _wishlistItems.value.filter { it.id != item.id }
-        _wishlistItems.value = updatedList // Esto emite el nuevo estado
-        Log.d("WishlistFlow", "Emitiendo nueva lista al eliminar: ${updatedList.size} items")
+        // Eliminar el ítem específico por ID y color
+        val updatedList = _wishlistItems.value.filter {
+            !(it.id == item.id && it.selectedColor == item.selectedColor)
+        }
+        _wishlistItems.value = updatedList
+        Log.d("WishlistViewModel", "Item eliminado de la lista de deseos: ${item.name}, Color: ${item.selectedColor}")
     }
 
-    fun isItemInWishlist(itemId: String?): Boolean {
-        return _wishlistItems.value.any { it.id == itemId }
+    fun isItemInWishlist(itemId: String?, selectedColor: String?): Boolean {
+        // Verificar si existe por ID y color
+        return _wishlistItems.value.any { it.id == itemId && it.selectedColor == selectedColor }
     }
 
     private fun saveWishlist(items: List<ItemsModel>) {
@@ -57,7 +72,7 @@ class ListaDeDeseosViewModel(private val context: Context) : ViewModel() {
         val jsonString = sharedPreferences.getString("wishlist", null)
         return jsonString?.let {
             val type = object : TypeToken<List<ItemsModel>>() {}.type
-            gson.fromJson<List<ItemsModel>>(it, type) // <--- Aquí ocurre el NullPointerException
+            gson.fromJson<List<ItemsModel>>(it, type) ?: emptyList()
         } ?: emptyList()
     }
 
@@ -67,6 +82,4 @@ class ListaDeDeseosViewModel(private val context: Context) : ViewModel() {
         Log.d("CartViewModel", "Item added to cart. Cart size: ${_cartItems.value.size}")
         //TODO: Save Cart Items
     }
-
-
 }

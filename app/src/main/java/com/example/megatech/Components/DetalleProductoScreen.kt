@@ -70,13 +70,13 @@ fun DetalleProductoScreen(itemId: String?, sessionManager: SessionManager, navCo
     val listaDeDeseos by listaDeDeseosViewModel.wishlistItems.collectAsState()
     val carritoDeCompra by carritoDeCompraViewModel.itemCarrito.collectAsState()
 
-    var isFavoriteBottom = remember(producto, listaDeDeseos) {
-        derivedStateOf {
-            producto?.id?.let { id -> listaDeDeseos.any { it.id == id } } ?: false
-        }
-    }.value
+    var isFavoriteBottom by remember { mutableStateOf(false) }
 
-
+    LaunchedEffect(producto, listaDeDeseos, selectedColorName) {
+        isFavoriteBottom = producto?.let { p ->
+            listaDeDeseosViewModel.isItemInWishlist(p.id, selectedColorName)
+        } ?: false
+    }
 
 
     var isCarritoBottom by remember(producto, carritoDeCompra) {
