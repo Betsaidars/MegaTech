@@ -138,7 +138,7 @@ fun MainView(navController: NavController, sessionManager: SessionManager) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
-                modifier = Modifier.weight(1f) // El buscador ocupa el espacio restante
+                modifier = Modifier.weight(1f)
             ) {
                 // Logo Clicable
                 IconButton(onClick = { /* TODO: Implementar acción al hacer clic en el logo */ }) {
@@ -178,7 +178,7 @@ fun MainView(navController: NavController, sessionManager: SessionManager) {
             modifier = Modifier
                 .fillMaxWidth()
                 .height(250.dp)
-                .padding(top = 16.dp) // Reducido el padding superior
+                .padding(top = 16.dp)
         ) { page ->
             Image(
                 painter = rememberImagePainter(banners[page].imageUrl),
@@ -261,7 +261,7 @@ fun MainView(navController: NavController, sessionManager: SessionManager) {
             }
         }
 
-        Spacer(modifier = Modifier.height(16.dp)) // Reducido el espacio
+        Spacer(modifier = Modifier.height(16.dp))
 
         Column(
             modifier = Modifier

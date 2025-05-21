@@ -58,8 +58,8 @@ fun LoginView(navController: NavController, sessionManager: SessionManager) {
     var passwordVisible by remember { mutableStateOf(false) }
 
     val outlinedTextFieldColors = OutlinedTextFieldDefaults.colors(
-        focusedBorderColor = Color(0xFFFFA7B1), // Cambia este color al que desees
-        unfocusedBorderColor = MaterialTheme.colorScheme.outline, // Color del borde cuando no está enfocado
+        focusedBorderColor = Color(0xFFFFA7B1),
+        unfocusedBorderColor = MaterialTheme.colorScheme.outline,
         cursorColor = Color(0xFFFFA7B1),
         focusedLabelColor = Color(0xFFFFA7B1)
     )

@@ -6,12 +6,16 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -45,6 +49,13 @@ fun RegisterView(navController: NavController, sessionManager: SessionManager) {
     var passwordVisible by remember { mutableStateOf(false) }
     var confirmPasswordVisible by remember { mutableStateOf(false) }
 
+    val outlinedTextFieldColors = OutlinedTextFieldDefaults.colors(
+        focusedBorderColor = Color(0xFFFFA7B1),
+        unfocusedBorderColor = MaterialTheme.colorScheme.outline,
+        cursorColor = Color(0xFFFFA7B1),
+        focusedLabelColor = Color(0xFFFFA7B1)
+    )
+
     // Observar el evento de éxito del registro
     LaunchedEffect(registerViewModel.registrationSuccess) {
         registerViewModel.registrationSuccess.collect { success ->
@@ -64,14 +75,16 @@ fun RegisterView(navController: NavController, sessionManager: SessionManager) {
         OutlinedTextField(
             value = registerViewModel.username.value,
             onValueChange = { registerViewModel.username.value = it },
-            label = { Text("Nombre de Usuario") }
+            label = { Text("Nombre de Usuario") },
+            colors = outlinedTextFieldColors
         )
         Spacer(modifier = Modifier.height(8.dp))
         OutlinedTextField(
             value = registerViewModel.email.value,
             onValueChange = { registerViewModel.email.value = it },
             label = { Text("Email") },
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email)
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
+            colors = outlinedTextFieldColors
         )
         Spacer(modifier = Modifier.height(8.dp))
 
@@ -80,6 +93,7 @@ fun RegisterView(navController: NavController, sessionManager: SessionManager) {
             onValueChange = { registerViewModel.password.value = it },
             label = { Text("Contraseña") },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+            colors = outlinedTextFieldColors,
                     visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
             trailingIcon = {
                 val imageResource = if (passwordVisible)
@@ -102,6 +116,7 @@ fun RegisterView(navController: NavController, sessionManager: SessionManager) {
             label = { Text("Confirmar Contraseña") },
             isError = registerViewModel.passwordError.value,
             visualTransformation = if (confirmPasswordVisible) VisualTransformation.None else PasswordVisualTransformation(), // Oculta la contraseña por defecto
+            colors = outlinedTextFieldColors,
             trailingIcon = {
                 val imageResource = if (passwordVisible)
                     R.drawable.visibility // Reemplaza con el nombre de tu icono de ojo abierto
@@ -119,7 +134,13 @@ fun RegisterView(navController: NavController, sessionManager: SessionManager) {
             Text(text = "Las contraseñas no coinciden", color = Color.Red)
         }
         Spacer(modifier = Modifier.height(16.dp))
-        Button(onClick = { registerViewModel.registerUser() }) {
+        Button(onClick = { registerViewModel.registerUser() },
+            colors = ButtonDefaults.buttonColors(
+                containerColor = Color(0xFFFFA7B1),
+                contentColor = Color.White
+            ),
+            shape = RoundedCornerShape(4.dp)
+        ) {
             Text("Registrarse")
         }
 
