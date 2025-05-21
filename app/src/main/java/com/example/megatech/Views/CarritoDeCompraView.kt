@@ -21,6 +21,7 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -98,7 +99,11 @@ fun CarritoDeCompraView(navController: NavController, carritoDeCompraViewModel: 
                     onClick = { navController.navigate("formularioCompra") },
                     modifier = Modifier
                         .fillMaxWidth(),
-                    shape = RoundedCornerShape(4.dp)
+                    shape = RoundedCornerShape(4.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color(0xFFFFA7B1),
+                        contentColor = Color.White
+                    )
                 ) {
                     Text("Comprar")
                 }
@@ -133,7 +138,6 @@ fun CarritoDeCompraView(navController: NavController, carritoDeCompraViewModel: 
                             snackbarHostState = snackbarHostState,
                             coroutineScope = coroutineScope
                         )
-
                     }
                 }
             }

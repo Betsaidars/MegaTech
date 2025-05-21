@@ -1,10 +1,12 @@
 package com.example.megatech.Views
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 
@@ -32,7 +34,13 @@ fun CompraRealizadaView(navController: NavController) {
                     navController.navigate("Main") {
                         popUpTo("Login") { inclusive = true } // Opcional: volver al inicio y limpiar stack
                     }
-                }) {
+                },
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color(0xFFFFA7B1),
+                        contentColor = Color.White
+                    ),
+                    shape = RoundedCornerShape(4.dp)
+                ) {
                     Text("Volver a la pantalla principal")
                 }
             }

@@ -110,8 +110,10 @@ fun FormularioCompraView(
                     enabled = nombre.isNotBlank() && direccion.isNotBlank() && carritoListItems.isNotEmpty() && selectedPaymentMethod.isNotBlank(),
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(4.dp),
-
-
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color(0xFFFFA7B1),
+                        contentColor = Color.White
+                    )
                 ) {
                     Text("Pagar")
                 }
